@@ -1,39 +1,36 @@
 # Coffee Shop
 
-A coffee shop web application that helps customers explore drinks and food, customize orders, and choose convenient pickup or delivery options.
+A student-built shop site. Customers will browse drinks and food, customize a drink, read the shop story, see discounts, and choose pickup or delivery. The team is learning TypeScript, React, Next.js, and Git while building it.
 
-## Overview
+Coding agents that change this repo follow [AGENTS.md](AGENTS.md).
 
-### Purpose
+## What works today
 
-This project gives coffee shop customers a clear way to learn about the shop, explore its menu, and find convenient ordering options. It will present drink ingredients and prices, support drink customization, highlight seasonal food and drink offerings, tell the story of the shop, and show available discounts.
+The home page at `/` renders without a database. A starter page lives at `/example`, and `GET /api/example` connects to MongoDB. The navbar also links to About, Menu, Specials, and Contact. Those pages arrive with their issues.
 
-### Planned features
+## What we are building
 
 - Browse drinks with ingredients and prices
-- Customize drinks before ordering
-- Browse food and seasonal food and drink offerings
+- Customize a drink before ordering
+- Browse food and seasonal offerings
 - Read the coffee shop story
 - Choose pickup or delivery through Grubhub or DoorDash
 - See available discounts
 
-### Languages
-
-Application code is TypeScript and React, styled with CSS, and served by Next.js. MongoDB is reached through Mongoose when a route needs the database. [Getting started](docs/getting-started.md) shows where each language lives in the tree.
-
-### Team
-
-The Coffee Shop team consists of six students:
+## Team
 
 - Brian — project tech lead
-- Jean — backend; Java, Python, and TypeScript
-- Naomi — database; web development and database work
-- Vedika — frontend; Java, Python, GitHub collaboration, and design
-- Aditi — frontend; HTML, CSS, Java, and Python
-- Sofie — backend; HTML, CSS, Python, and collaboration
+- Jean — backend
+- Naomi — database
+- Vedika — frontend
+- Aditi — frontend
+- Sofie — backend
 
 ## Start here
 
+Learning developers start with the first two guides. Coding agents start with `AGENTS.md`, then open a guide when the task matches it.
+
 1. [Getting started](docs/getting-started.md) — install the app, learn the folders, and run it locally.
-2. [Contributing](docs/contributing.md) — branches, commits, and pull requests.
+2. [Contributing](docs/contributing.md) — one branch and pull request per issue.
 3. [Project setup](docs/project-setup.md) — tools already configured in this repository.
+4. [AGENTS.md](AGENTS.md) — how a coding agent should change this repo.
