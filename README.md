@@ -2,21 +2,13 @@
 
 A coffee shop web application that helps customers explore drinks and food, customize orders, and choose convenient pickup or delivery options.
 
-## Table of Contents
-
-- [Overview](#overview)
-  - [Purpose](#purpose)
-  - [Planned Features](#planned-features)
-  - [Team](#team)
-- [Getting Started And Contributing](#getting-started-and-contributing)
-
 ## Overview
 
 ### Purpose
 
 This project gives coffee shop customers a clear way to learn about the shop, explore its menu, and find convenient ordering options. It will present drink ingredients and prices, support drink customization, highlight seasonal food and drink offerings, tell the story of the shop, and show available discounts.
 
-### Planned Features
+### Planned features
 
 - Browse drinks with ingredients and prices
 - Customize drinks before ordering
@@ -25,19 +17,23 @@ This project gives coffee shop customers a clear way to learn about the shop, ex
 - Choose pickup or delivery through Grubhub or DoorDash
 - See available discounts
 
+### Languages
+
+Application code is TypeScript and React, styled with CSS, and served by Next.js. MongoDB is reached through Mongoose when a route needs the database. [Getting started](docs/getting-started.md) shows where each language lives in the tree.
+
 ### Team
 
-The Coffee Shop team consists of six students. Team responsibilities are listed below:
+The Coffee Shop team consists of six students:
 
-- Brian - Project tech lead for the overall project
-- Jean - Backend; strengths in Java, Python, and TypeScript; interested in team experience and backend work
-- Naomi - Database; also interested in technical team projects, web development, and database work
-- Vedika - Frontend; strengths in Java and Python; interested in GitHub collaboration and design
-- Aditi - Frontend; strengths in HTML, CSS, Java, and Python
-- Sofie - Backend; strengths in HTML, CSS, and Python; interested in collaboration and backend work
+- Brian — project tech lead
+- Jean — backend; Java, Python, and TypeScript
+- Naomi — database; web development and database work
+- Vedika — frontend; Java, Python, GitHub collaboration, and design
+- Aditi — frontend; HTML, CSS, Java, and Python
+- Sofie — backend; HTML, CSS, Python, and collaboration
 
-## Getting Started And Contributing
+## Start here
 
-Visit [getting-started.md](docs/getting-started.md) on info for how to set up this repo.
-
-Visit [contributing.md](docs/contributing.md) on info for how to contribute to this repo.
+1. [Getting started](docs/getting-started.md) — install the app, learn the folders, and run it locally.
+2. [Contributing](docs/contributing.md) — branches, commits, and pull requests.
+3. [Project setup](docs/project-setup.md) — tools already configured in this repository.

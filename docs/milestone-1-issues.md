@@ -1,7 +1,8 @@
 # Milestone 1 Issue Drafts
 
 These drafts are intentionally small for teammates who are learning the project and
-the tools. They have not been created in GitHub, committed, or pushed.
+the tools. They live in this file so the team can read them. File each one as a
+GitHub issue before assigning the work.
 
 The shared layout already renders `Navbar` on every page, including the five links.
 Home does not render the navbar again. Do not import `Navbar` inside a page.
