@@ -20,6 +20,10 @@ For each file, name the file, the URL it serves (if any), and the mechanism: pag
 
 If the `test` script in `package.json` is still a placeholder, say that here. Add a test runner when the issue asks for tests.
 
+### Briefly State What You Learned
+
+{What programming languages, interpersonal skills, or something else you learned or improved from this pull request}
+
 ### Pull Request Checklist
 
 - [ ] Code is neat, readable, and works
