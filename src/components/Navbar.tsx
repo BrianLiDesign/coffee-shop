@@ -1,4 +1,8 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+
 import styles from "@/styles/navbar.module.css";
 
 const links = [
@@ -10,16 +14,24 @@ const links = [
 ];
 
 export default function Navbar() {
+  const pathname = usePathname();
   return (
     <nav className={styles.nav} aria-label="Main">
       <ul className={styles.list}>
-        {links.map((link) => (
-          <li key={link.href}>
-            <Link className={styles.link} href={link.href}>
-              {link.label}
-            </Link>
-          </li>
-        ))}
+        {links.map((link) => {
+          const isActive = link.href === pathname;
+          return (
+            <li key={link.href}>
+              <Link
+                aria-current={isActive ? "page" : undefined}
+                className={isActive ? `${styles.link} ${styles.active}` : styles.link}
+                href={link.href}
+              >
+                {link.label}
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     </nav>
   );
