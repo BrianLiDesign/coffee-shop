@@ -22,3 +22,7 @@
 .link:focus-visible {
   text-decoration: underline;
 }
+
+.active {
+  color: #ca2699;
+}
