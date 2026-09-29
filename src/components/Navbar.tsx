@@ -1,7 +1,9 @@
 "use client";
+
 import Link from "next/link";
-import styles from "@/styles/navbar.module.css";
 import { usePathname } from "next/navigation";
+
+import styles from "@/styles/navbar.module.css";
 
 const links = [
   { href: "/", label: "Home" },
@@ -20,7 +22,11 @@ export default function Navbar() {
           const isActive = link.href === pathname;
           return (
             <li key={link.href}>
-              <Link className={isActive ? `${styles.active} ${styles.link}` : styles.link} href={link.href}>
+              <Link
+                aria-current={isActive ? "page" : undefined}
+                className={isActive ? `${styles.link} ${styles.active}` : styles.link}
+                href={link.href}
+              >
                 {link.label}
               </Link>
             </li>
