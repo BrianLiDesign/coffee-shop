@@ -11,4 +11,4 @@ These tools are already configured. You do not need to add them before writing a
 7. **Pre-commit hook.** Husky runs lint-staged, which formats staged files and runs ESLint on JavaScript and TypeScript.
 8. **Issue and pull request templates** in `.github`.
 9. **Continuous integration.** `.github/workflows/ci.yml` runs on pushes and pull requests to `main` and `develop`. The job installs dependencies, runs `npm run build`, and runs `npm test` on Node 18, 20, and 22. The build step receives `MONGO_URI` from the repository secret of the same name.
-10. **Tests.** `npm test` is a placeholder command. It succeeds by printing a message until a test runner is added.
+10. **Tests.** `npm test` uses Node's built-in test runner to exercise the offerings endpoint over HTTP. It starts its own Next.js server with separate build output and no Atlas credentials. `npm run typecheck` checks TypeScript. See [the Offering contract](./offering-api-contract.md) for coverage and future persistence checks.
