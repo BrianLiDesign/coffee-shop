@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { Offering } from "@/database/offering";
+import type { Offering } from "@/types/offering";
 import styles from "@/styles/offerings.module.css";
 
 interface OfferingsPageProps {
