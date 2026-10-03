@@ -1,6 +1,6 @@
 # Offering API contract
 
-Issue [#14](https://github.com/BrianLiDesign/coffee-shop/issues/14) establishes this contract for [Milestone 2](https://github.com/BrianLiDesign/coffee-shop/issues/12). GET is implemented using fixtures today. Database-backed GET arrives in #15; POST and runtime input validation arrive in #16. This guide defines those later behaviors without claiming they are already implemented.
+Issue [#14](https://github.com/BrianLiDesign/coffee-shop/issues/14) establishes this contract for [Milestone 2](https://github.com/BrianLiDesign/coffee-shop/issues/12). GET is implemented using fixtures today. In the [independent assignment plan](./milestone-2-parallel-work.md), #15 supplies storage and seeding, #16 supplies independently tested GET/POST handlers and runtime validation, #17 supplies the special control/customer display checks, #20 supplies the management form, and #18 supplies acceptance tooling. Brian composes the real routes and UI during final milestone integration. This guide defines later integrated behavior without claiming it is already implemented.
 
 ## Shared types
 
@@ -40,7 +40,7 @@ Current response: 200 with all 16 fixtures, including three specials. A shortene
 
 Menu displays every item. Specials displays only items with `specialOffer: true`: Pumpkin Spice Latte, Golden Hour Cold Brew, and Hojicha Latte in the starting fixtures.
 
-In #15, GET will read the selected database at request time, return `[]` for an empty collection, order by name then ID, and return a sanitized 503 on database failure. It will never silently fall back to fixtures.
+After Brian composes #15's storage and #16's handlers, GET will read the selected database at request time, return `[]` for an empty collection, order by name then ID, and return a sanitized 503 on database failure. It will never silently fall back to fixtures. The existing fixture route stays functional while those modules are developed independently.
 
 ## POST /api/offerings (planned in #16)
 
@@ -56,7 +56,7 @@ Send `Content-Type: application/json` and a JSON object:
 }
 ```
 
-The successful response is 201 with the saved Offering, including a server-generated string `ID`. A subsequent GET must return the same record. Omit `specialOffer` to use false; true marks it as a special. The form's checkbox arrives in #17.
+The successful response is 201 with the saved Offering, including a server-generated string `ID`. A subsequent GET must return the same record. Omit `specialOffer` to use false; true marks it as a special. The standalone checkbox is supplied in #17 and composed with #20's form during final integration.
 
 | Field        | Authoritative validation required in #16                                             |
 | ------------ | ------------------------------------------------------------------------------------ |
@@ -103,10 +103,12 @@ These checks cover string identity, the 16-item starting menu and public fields,
 
 Use Node 18 or newer, matching the current CI matrix. The harness uses Node's [test runner](https://nodejs.org/api/test.html) and Next.js's [custom output directory](https://nextjs.org/docs/14/app/api-reference/next-config-js/distDir).
 
-## Adding persistence checks in #15 and #16
+## Independent checks and integrated persistence checks
+
+#15 proves its storage and seed behavior against a self-contained disposable local database. #16 proves HTTP handler behavior using its own explicitly test-only store. #18 independently proves its acceptance runner and disposable database lifecycle tooling. These assignments do not wait for each other; a store double or runner self-test is not evidence of real application persistence.
 
 Keep HTTP requests and responses as the regression surface. Replace fixture-specific expectations with independently defined seed expectations when GET becomes database-backed. Extend the harness to start a disposable local MongoDB instance or use an explicitly designated isolated test database, setting the child app's test URI to that database.
 
 Setup and cleanup may manage isolated data, but assertions observe persistence through POST followed by GET. Do not assert private model calls. Refuse developer/integration database targets for automated destructive cleanup. Ordinary CI must not use shared Atlas credentials; a separate deliberate Atlas smoke check supplies live-access evidence.
 
-No disposable database launcher is added in #14 because the current route does not use MongoDB. #15 chooses and implements that launcher as part of its real persistence tests.
+No disposable database launcher is added in #14 because the current route does not use MongoDB. Each assignment supplies the setup needed for its own tests. During final integration, Brian connects the real route and isolated database to the acceptance runner and records actual POST/GET persistence results under #12. Routine checks continue to exclude shared Atlas credentials.
