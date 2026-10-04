@@ -42,7 +42,7 @@ Learning developers start with the first two guides. Coding agents start with `A
 Open the [independent developer plan](docs/milestone-2-parallel-work.md), find your issue, and read its acceptance criteria. Every assignment can be built, tested, reviewed, and merged without waiting for another developer's issue to finish.
 
 - [API contract](docs/offering-api-contract.md): the shared input, response, and error agreement.
-- [Developer guide](docs/milestone-2-developer-guide.md): planned Atlas setup and individual verification. Checker and seed commands will be documented when implemented.
+- [Developer guide](docs/milestone-2-developer-guide.md): Atlas setup and individual verification. Run `npm run db:check` for a real read or explicitly run `npm run db:check:write` for disposable write/read/cleanup. Seed tooling is separate work.
 - [Milestone spec](docs/milestone-2-spec.md): the final integrated requirements.
 - [Glossary](CONTEXT.md): offering, special offering, menu, and offering management.
 
