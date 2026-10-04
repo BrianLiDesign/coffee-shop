@@ -9,7 +9,10 @@
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "format": "prettier --write .",
-    "test": "node --test tests/offerings-http.test.mjs",
+    "test": "node --test tests/offerings-http.test.mjs tests/database-checker.test.mjs",
+    "test:db": "node --test tests/database-checker.test.mjs",
+    "db:check": "node scripts/check-database.mjs",
+    "db:check:write": "node scripts/check-database.mjs --write",
     "typecheck": "tsc --noEmit",
     "prepare": "husky"
   },
@@ -29,6 +32,7 @@
     "eslint-plugin-prettier": "^5",
     "husky": "^9",
     "lint-staged": "^15",
+    "mongodb-memory-server-core": "^10.4.3",
     "prettier": "^3",
     "typescript": "^5"
   }

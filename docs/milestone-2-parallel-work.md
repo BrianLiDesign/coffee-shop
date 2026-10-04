@@ -72,4 +72,4 @@ Only close parent #12 and complete Milestone 2 after these gates pass. Public de
 
 ## Current capabilities
 
-The existing API still serves fixtures. String IDs and the HTTP GET regression tests have shipped in #14. Storage, POST, management, checker, seed, and acceptance tooling above remain assigned future work. Atlas access has not been established by this coordination update. The older handoff is a historical snapshot and must not be used as current readiness evidence.
+The existing API still serves fixtures. String IDs and the HTTP GET regression tests shipped in #14. #13 supplies the database checker and onboarding commands, verified against disposable local MongoDB. Storage, POST, management, seed, and acceptance tooling remain separate assignments. Individual Atlas access has not been established by the checker tests. The older handoff is a historical snapshot and must not be used as current readiness evidence.
