@@ -1,0 +1,122 @@
+import { isOfferingCategory } from "@/lib/offerings";
+import styles from "@/styles/manage-offerings.module.css";
+import type { OfferingCategory } from "@/types/offering";
+
+export type OfferingFormValues = {
+  name: string;
+  description: string;
+  price: string;
+  category: OfferingCategory;
+  specialOffer: boolean;
+};
+
+type OfferingFormProps = {
+  formValues: OfferingFormValues;
+  errors: Record<string, string>;
+  isSubmitting: boolean;
+  onFieldChange: <K extends keyof OfferingFormValues>(field: K, value: OfferingFormValues[K]) => void;
+  onSubmit: (event: React.FormEvent<HTMLFormElement>) => Promise<void>;
+  specialOffer?: boolean;
+};
+
+export default function OfferingForm({
+  formValues,
+  errors,
+  isSubmitting,
+  onFieldChange,
+  onSubmit,
+  specialOffer = false,
+}: OfferingFormProps) {
+  return (
+    <form className={styles.form} onSubmit={onSubmit} noValidate>
+      <div className={styles.field}>
+        <label htmlFor="offering-name">Name</label>
+        <input
+          id="offering-name"
+          className={styles.input}
+          type="text"
+          value={formValues.name}
+          maxLength={100}
+          aria-describedby={errors.name ? "offering-name-error" : undefined}
+          onChange={(event) => onFieldChange("name", event.target.value)}
+          aria-invalid={Boolean(errors.name)}
+        />
+        {errors.name ? (
+          <p id="offering-name-error" className={styles.inlineError}>
+            {errors.name}
+          </p>
+        ) : null}
+      </div>
+
+      <div className={styles.field}>
+        <label htmlFor="offering-description">Description</label>
+        <textarea
+          id="offering-description"
+          className={styles.textarea}
+          value={formValues.description}
+          maxLength={500}
+          aria-describedby={errors.description ? "offering-description-error" : undefined}
+          onChange={(event) => onFieldChange("description", event.target.value)}
+          aria-invalid={Boolean(errors.description)}
+        />
+        {errors.description ? (
+          <p id="offering-description-error" className={styles.inlineError}>
+            {errors.description}
+          </p>
+        ) : null}
+      </div>
+
+      <div className={styles.field}>
+        <label htmlFor="offering-price">Price</label>
+        <input
+          id="offering-price"
+          className={styles.input}
+          type="number"
+          min="0"
+          step="0.01"
+          value={formValues.price}
+          aria-describedby={errors.price ? "offering-price-error" : undefined}
+          onChange={(event) => onFieldChange("price", event.target.value)}
+          aria-invalid={Boolean(errors.price)}
+        />
+        {errors.price ? (
+          <p id="offering-price-error" className={styles.inlineError}>
+            {errors.price}
+          </p>
+        ) : null}
+      </div>
+
+      <div className={styles.field}>
+        <label htmlFor="offering-category">Category</label>
+        <select
+          id="offering-category"
+          className={styles.select}
+          value={formValues.category}
+          aria-describedby={errors.category ? "offering-category-error" : undefined}
+          onChange={(event) => {
+            const category = event.target.value;
+            if (isOfferingCategory(category)) {
+              onFieldChange("category", category);
+            }
+          }}
+          aria-invalid={Boolean(errors.category)}
+        >
+          <option value="Coffee">Coffee</option>
+          <option value="Tea">Tea</option>
+          <option value="Smoothie">Smoothie</option>
+        </select>
+        {errors.category ? (
+          <p id="offering-category-error" className={styles.inlineError}>
+            {errors.category}
+          </p>
+        ) : null}
+      </div>
+
+      <input type="hidden" name="specialOffer" value={String(specialOffer)} />
+
+      <button type="submit" className={styles.button} disabled={isSubmitting}>
+        {isSubmitting ? "Saving…" : "Save offering"}
+      </button>
+    </form>
+  );
+}
