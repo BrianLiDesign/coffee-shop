@@ -78,7 +78,8 @@ An API route is a `route.ts` file under `src/app/api`. `src/app/api/example/rout
 - `npm run lint` — ESLint and Prettier
 - `npm run lint:fix` — same checks, with automatic fixes where the tools can apply them
 - `npm run build` — production build
-- `npm test` — placeholder. It prints a message until a test runner is installed.
+- `npm test` — runs the offerings HTTP checks using an automatically started local server; no database credentials needed.
+- `npm run typecheck` — checks TypeScript without emitting files.
 - `git stash` — set aside uncommitted work so you can switch branches
 - `git stash apply` — restore the most recent stash
 

@@ -11,7 +11,7 @@ import {
   submitOffering,
   validateOfferingInput,
 } from "@/lib/offerings";
-import type { CreateOfferingInput, Offering } from "@/types/offering";
+import { DEFAULT_SPECIAL_OFFER, type CreateOfferingInput, type Offering } from "@/types/offering";
 import styles from "@/styles/manage-offerings.module.css";
 
 const initialFormState: OfferingFormValues = {
@@ -19,7 +19,7 @@ const initialFormState: OfferingFormValues = {
   description: "",
   price: "",
   category: "Coffee",
-  specialOffer: false,
+  specialOffer: DEFAULT_SPECIAL_OFFER,
 };
 
 export default function ManageOfferingsPage() {

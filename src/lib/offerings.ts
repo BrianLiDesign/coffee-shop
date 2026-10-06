@@ -1,12 +1,13 @@
-import type { CreateOfferingInput, Offering, OfferingCategory, OfferingErrorEnvelope } from "@/types/offering";
-
-export const OFFERING_CATEGORIES = ["Coffee", "Tea", "Smoothie"] as const;
-
-export const OFFERING_LIMITS = {
-  nameMax: 100,
-  descriptionMax: 500,
-  priceMin: 0,
-};
+import {
+  DEFAULT_SPECIAL_OFFER,
+  OFFERING_CATEGORIES,
+  OFFERING_INPUT_LIMITS,
+  type CreateOfferingInput,
+  type OfferingErrorCode,
+  type Offering,
+  type OfferingCategory,
+  type OfferingErrorResponse,
+} from "@/types/offering";
 
 export function isOfferingCategory(value: string): value is OfferingCategory {
   return OFFERING_CATEGORIES.some((category) => category === value);
@@ -51,7 +52,7 @@ export function normalizeOfferingInput(input: OfferingInputValues): CreateOfferi
     description: cleanText(input.description),
     category,
     price: Number.isFinite(price) ? price : Number.NaN,
-    specialOffer: input.specialOffer ?? false,
+    specialOffer: input.specialOffer ?? DEFAULT_SPECIAL_OFFER,
   };
 }
 
@@ -60,15 +61,15 @@ export function validateOfferingInput(input: OfferingInputValues): Record<string
   const name = cleanText(input.name);
   if (!name) {
     errors.name = "Name is required.";
-  } else if (name.length > OFFERING_LIMITS.nameMax) {
-    errors.name = `Name must be ${OFFERING_LIMITS.nameMax} characters or fewer.`;
+  } else if (name.length > OFFERING_INPUT_LIMITS.name) {
+    errors.name = `Name must be ${OFFERING_INPUT_LIMITS.name} characters or fewer.`;
   }
 
   const description = cleanText(input.description);
   if (!description) {
     errors.description = "Description is required.";
-  } else if (description.length > OFFERING_LIMITS.descriptionMax) {
-    errors.description = `Description must be ${OFFERING_LIMITS.descriptionMax} characters or fewer.`;
+  } else if (description.length > OFFERING_INPUT_LIMITS.description) {
+    errors.description = `Description must be ${OFFERING_INPUT_LIMITS.description} characters or fewer.`;
   }
 
   const category = cleanText(input.category);
@@ -85,16 +86,25 @@ export function validateOfferingInput(input: OfferingInputValues): Record<string
   const price = parseOfferingPrice(input.price);
   if (!Number.isFinite(price)) {
     errors.price = "Price must be a valid number.";
-  } else if (price < OFFERING_LIMITS.priceMin) {
+  } else if (price < 0) {
     errors.price = "Price must be zero or greater.";
-  } else if (Math.abs(price * 100 - Math.round(price * 100)) > 1e-8) {
+  } else if (
+    Math.abs(
+      price * 10 ** OFFERING_INPUT_LIMITS.priceDecimalPlaces -
+        Math.round(price * 10 ** OFFERING_INPUT_LIMITS.priceDecimalPlaces),
+    ) > 1e-8
+  ) {
     errors.price = "Price can have at most two decimal places.";
   }
 
   return errors;
 }
 
-export function toErrorEnvelope(code: string, message: string, fields?: Record<string, string>): OfferingErrorEnvelope {
+export function toErrorEnvelope(
+  code: OfferingErrorCode,
+  message: string,
+  fields?: Record<string, string>,
+): OfferingErrorResponse {
   return {
     error: {
       code,
@@ -138,7 +148,7 @@ export async function submitOffering(input: Partial<CreateOfferingInput>): Promi
   });
 
   if (!response.ok) {
-    const payload = (await response.json().catch(() => null)) as OfferingErrorEnvelope | null;
+    const payload = (await response.json().catch(() => null)) as OfferingErrorResponse | null;
 
     const message = payload?.error?.message ?? "The offering could not be saved.";
     const fields = payload?.error?.fields ?? {};

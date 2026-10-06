@@ -1,5 +1,17 @@
-export type OfferingCategory = "Coffee" | "Tea" | "Smoothie";
+/** Browser-safe contracts shared by offering pages and API routes. */
+export const OFFERING_CATEGORIES = ["Coffee", "Tea", "Smoothie"] as const;
 
+export type OfferingCategory = (typeof OFFERING_CATEGORIES)[number];
+
+export const OFFERING_INPUT_LIMITS = {
+  name: 100,
+  description: 500,
+  priceDecimalPlaces: 2,
+} as const;
+
+export const DEFAULT_SPECIAL_OFFER = false;
+
+/** An offering returned by GET or a successful POST. */
 export interface Offering {
   ID: string;
   name: string;
@@ -9,18 +21,17 @@ export interface Offering {
   specialOffer: boolean;
 }
 
-export interface CreateOfferingInput {
-  name: string;
-  description: string;
-  price: number;
-  category: OfferingCategory;
+/** POST callers supply offering details; the database supplies identity. */
+export type CreateOfferingInput = Omit<Offering, "ID" | "specialOffer"> & {
   specialOffer?: boolean;
-}
+};
 
-export interface OfferingErrorEnvelope {
+export type OfferingErrorCode = "INVALID_CONTENT_TYPE" | "INVALID_JSON" | "INVALID_INPUT" | "DATABASE_UNAVAILABLE";
+
+export interface OfferingErrorResponse {
   error: {
-    code: string;
+    code: OfferingErrorCode;
     message: string;
-    fields?: Record<string, string>;
+    fields?: Partial<Record<keyof CreateOfferingInput, string>>;
   };
 }

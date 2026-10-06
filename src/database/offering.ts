@@ -1,17 +1,9 @@
-/** A coffee-shop item shown on the menu. */
-export interface Offering {
-  ID: number;
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  specialOffer: boolean;
-}
+import type { Offering } from "@/types/offering";
 
 /** Mock offerings shared by the API and menu pages. */
 export const OfferingList: Offering[] = [
   {
-    ID: 1,
+    ID: "1",
     name: "Cappuccino",
     description: "A delicious cappuccino with steamed milk and foam",
     price: 5.9,
@@ -20,7 +12,7 @@ export const OfferingList: Offering[] = [
   },
 
   {
-    ID: 2,
+    ID: "2",
     name: "Pumpkin Spice Latte",
     description: "A delicious pumpkin spice latte with steamed milk and foam",
     price: 6.2,
@@ -29,7 +21,7 @@ export const OfferingList: Offering[] = [
   },
 
   {
-    ID: 3,
+    ID: "3",
     name: "Golden Hour Cold Brew",
     description: "A delicious cold brew with a golden hour twist",
     price: 6.5,
@@ -38,7 +30,7 @@ export const OfferingList: Offering[] = [
   },
 
   {
-    ID: 4,
+    ID: "4",
     name: "Mocha",
     description: "A delicious mocha with steamed milk and chocolate",
     price: 5.99,
@@ -47,7 +39,7 @@ export const OfferingList: Offering[] = [
   },
 
   {
-    ID: 5,
+    ID: "5",
     name: "Espresso",
     description: "A delicious espresso with rich and bold flavors",
     price: 5.0,
@@ -56,7 +48,7 @@ export const OfferingList: Offering[] = [
   },
 
   {
-    ID: 6,
+    ID: "6",
     name: "Latte",
     description: "Espresso with steamed milk topped with a light layer of foam",
     price: 5.5,
@@ -65,7 +57,7 @@ export const OfferingList: Offering[] = [
   },
 
   {
-    ID: 7,
+    ID: "7",
     name: "Cortado",
     description: "Equal parts espresso and warm steamed milk",
     price: 6.2,
@@ -74,7 +66,7 @@ export const OfferingList: Offering[] = [
   },
 
   {
-    ID: 8,
+    ID: "8",
     name: "English Breakfast Tea",
     description: "A brewed black tea with a dash of milk",
     price: 4.5,
@@ -83,7 +75,7 @@ export const OfferingList: Offering[] = [
   },
 
   {
-    ID: 9,
+    ID: "9",
     name: "Matcha",
     description: "Green tea with milk",
     price: 6.2,
@@ -92,7 +84,7 @@ export const OfferingList: Offering[] = [
   },
 
   {
-    ID: 10,
+    ID: "10",
     name: "Chai Latte",
     description: "Black tea combined with herbs, spices, and steamed milk",
     price: 6.2,
@@ -101,7 +93,7 @@ export const OfferingList: Offering[] = [
   },
 
   {
-    ID: 11,
+    ID: "11",
     name: "Chamomile Tea",
     description: "An herbal tea made from chamomile flowers",
     price: 4.5,
@@ -110,7 +102,7 @@ export const OfferingList: Offering[] = [
   },
 
   {
-    ID: 12,
+    ID: "12",
     name: "Cafe au Lait",
     description: "French press coffee with steamed milk",
     price: 6.2,
@@ -119,7 +111,7 @@ export const OfferingList: Offering[] = [
   },
 
   {
-    ID: 13,
+    ID: "13",
     name: "London Fog",
     description: "Earl Grey tea with vanilla syrup with steamed milk",
     price: 5.0,
@@ -128,7 +120,7 @@ export const OfferingList: Offering[] = [
   },
 
   {
-    ID: 14,
+    ID: "14",
     name: "Iced Hibiscus Berry",
     description: "A caffeine-free herbal tea naturally sweetened and served over ice",
     price: 5.99,
@@ -137,7 +129,7 @@ export const OfferingList: Offering[] = [
   },
 
   {
-    ID: 15,
+    ID: "15",
     name: "Fruit Smoothie",
     description: "Real fruit puree blended with ice and yogurt",
     price: 5.99,
@@ -146,7 +138,7 @@ export const OfferingList: Offering[] = [
   },
 
   {
-    ID: 16,
+    ID: "16",
     name: "Hojicha Latte",
     description: "Roasted green tea powder mixed with steamed milk",
     price: 6.6,

@@ -1,6 +1,6 @@
 import { isOfferingCategory } from "@/lib/offerings";
 import styles from "@/styles/manage-offerings.module.css";
-import type { OfferingCategory } from "@/types/offering";
+import { DEFAULT_SPECIAL_OFFER, OFFERING_INPUT_LIMITS, type OfferingCategory } from "@/types/offering";
 
 export type OfferingFormValues = {
   name: string;
@@ -25,7 +25,7 @@ export default function OfferingForm({
   isSubmitting,
   onFieldChange,
   onSubmit,
-  specialOffer = false,
+  specialOffer = DEFAULT_SPECIAL_OFFER,
 }: OfferingFormProps) {
   return (
     <form className={styles.form} onSubmit={onSubmit} noValidate>
@@ -36,7 +36,7 @@ export default function OfferingForm({
           className={styles.input}
           type="text"
           value={formValues.name}
-          maxLength={100}
+          maxLength={OFFERING_INPUT_LIMITS.name}
           aria-describedby={errors.name ? "offering-name-error" : undefined}
           onChange={(event) => onFieldChange("name", event.target.value)}
           aria-invalid={Boolean(errors.name)}
@@ -54,7 +54,7 @@ export default function OfferingForm({
           id="offering-description"
           className={styles.textarea}
           value={formValues.description}
-          maxLength={500}
+          maxLength={OFFERING_INPUT_LIMITS.description}
           aria-describedby={errors.description ? "offering-description-error" : undefined}
           onChange={(event) => onFieldChange("description", event.target.value)}
           aria-invalid={Boolean(errors.description)}

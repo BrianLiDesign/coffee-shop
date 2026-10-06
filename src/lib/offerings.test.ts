@@ -2,8 +2,9 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { OfferingApiError, sortOfferings, submitOffering, validateOfferingInput } from "@/lib/offerings";
+import { OFFERING_INPUT_LIMITS, type Offering } from "@/types/offering";
 
-const sampleOfferings = [
+const sampleOfferings: Offering[] = [
   {
     ID: "offer-2",
     name: "Cinnamon Latte",
@@ -66,14 +67,14 @@ test("validateOfferingInput accepts at most two decimal places and trims text", 
 test("validateOfferingInput enforces shared text limits and accepts zero price", () => {
   assert.deepStrictEqual(
     validateOfferingInput({
-      name: "x".repeat(101),
-      description: "A valid description.".repeat(25) + "x",
+      name: "x".repeat(OFFERING_INPUT_LIMITS.name + 1),
+      description: "x".repeat(OFFERING_INPUT_LIMITS.description + 1),
       price: 0,
       category: "Smoothie",
     }),
     {
-      name: "Name must be 100 characters or fewer.",
-      description: "Description must be 500 characters or fewer.",
+      name: `Name must be ${OFFERING_INPUT_LIMITS.name} characters or fewer.`,
+      description: `Description must be ${OFFERING_INPUT_LIMITS.description} characters or fewer.`,
     },
   );
 });
