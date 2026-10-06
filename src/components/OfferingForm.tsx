@@ -7,7 +7,6 @@ export type OfferingFormValues = {
   description: string;
   price: string;
   category: OfferingCategory;
-  specialOffer: boolean;
 };
 
 type OfferingFormProps = {
@@ -15,7 +14,7 @@ type OfferingFormProps = {
   errors: Record<string, string>;
   isSubmitting: boolean;
   onFieldChange: <K extends keyof OfferingFormValues>(field: K, value: OfferingFormValues[K]) => void;
-  onSubmit: (event: React.FormEvent<HTMLFormElement>) => Promise<void>;
+  onSubmit: (event: React.FormEvent<HTMLFormElement>, specialOffer: boolean) => Promise<void>;
   specialOffer?: boolean;
 };
 
@@ -28,11 +27,12 @@ export default function OfferingForm({
   specialOffer = DEFAULT_SPECIAL_OFFER,
 }: OfferingFormProps) {
   return (
-    <form className={styles.form} onSubmit={onSubmit} noValidate>
+    <form className={styles.form} onSubmit={(event) => onSubmit(event, specialOffer)} noValidate>
       <div className={styles.field}>
         <label htmlFor="offering-name">Name</label>
         <input
           id="offering-name"
+          disabled={isSubmitting}
           className={styles.input}
           type="text"
           value={formValues.name}
@@ -52,6 +52,7 @@ export default function OfferingForm({
         <label htmlFor="offering-description">Description</label>
         <textarea
           id="offering-description"
+          disabled={isSubmitting}
           className={styles.textarea}
           value={formValues.description}
           maxLength={OFFERING_INPUT_LIMITS.description}
@@ -70,6 +71,7 @@ export default function OfferingForm({
         <label htmlFor="offering-price">Price</label>
         <input
           id="offering-price"
+          disabled={isSubmitting}
           className={styles.input}
           type="number"
           min="0"
@@ -90,6 +92,7 @@ export default function OfferingForm({
         <label htmlFor="offering-category">Category</label>
         <select
           id="offering-category"
+          disabled={isSubmitting}
           className={styles.select}
           value={formValues.category}
           aria-describedby={errors.category ? "offering-category-error" : undefined}
@@ -111,8 +114,6 @@ export default function OfferingForm({
           </p>
         ) : null}
       </div>
-
-      <input type="hidden" name="specialOffer" value={String(specialOffer)} />
 
       <button type="submit" className={styles.button} disabled={isSubmitting}>
         {isSubmitting ? "Saving…" : "Save offering"}

@@ -121,7 +121,8 @@ export function sortOfferings(offerings: Offering[]): Offering[] {
 export async function fetchOfferings(signal?: AbortSignal): Promise<Offering[]> {
   const response = await fetch("/api/offerings", { method: "GET", signal });
   if (!response.ok) {
-    throw new Error("We could not load the current offerings.");
+    const payload = (await response.json().catch(() => null)) as OfferingErrorResponse | null;
+    throw new Error(payload?.error?.message ?? "We could not load the current offerings.");
   }
 
   const payload = (await response.json()) as Offering[];

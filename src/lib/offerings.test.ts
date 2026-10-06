@@ -1,7 +1,13 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { OfferingApiError, sortOfferings, submitOffering, validateOfferingInput } from "@/lib/offerings";
+import {
+  fetchOfferings,
+  OfferingApiError,
+  sortOfferings,
+  submitOffering,
+  validateOfferingInput,
+} from "@/lib/offerings";
 import { OFFERING_INPUT_LIMITS, type Offering } from "@/types/offering";
 
 const sampleOfferings: Offering[] = [
@@ -22,6 +28,21 @@ const sampleOfferings: Offering[] = [
     specialOffer: true,
   },
 ];
+
+test("fetchOfferings uses the server message and safely falls back for non-JSON failures", async () => {
+  const originalFetch = globalThis.fetch;
+  try {
+    globalThis.fetch = async () =>
+      new Response(JSON.stringify({ error: { code: "DATABASE_UNAVAILABLE", message: "Please try again later." } }), {
+        status: 503,
+      });
+    await assert.rejects(fetchOfferings(), { message: "Please try again later." });
+    globalThis.fetch = async () => new Response("Service unavailable", { status: 503 });
+    await assert.rejects(fetchOfferings(), { message: "We could not load the current offerings." });
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
 
 test("sortOfferings orders by name and then id", () => {
   assert.deepStrictEqual(sortOfferings(sampleOfferings), [sampleOfferings[1], sampleOfferings[0]]);
