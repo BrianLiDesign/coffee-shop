@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { register } from "node:module";
+import { createRequire } from "node:module";
 import { after, afterEach, before, describe, it, mock, test } from "node:test";
 import { JSDOM } from "jsdom";
 import { startHttpServer } from "./helpers/http-server.mjs";
@@ -118,17 +118,14 @@ describe("OfferingsPage with controlled responses", () => {
   let OfferingsPage;
 
   before(async () => {
-    const hooks = `export async function resolve(specifier, context, nextResolve) {
-      if (specifier.endsWith(".css")) {
-        const stub = "export default new Proxy({}, { get: (_, key) => String(key) });";
-        return { url: "data:text/javascript," + encodeURIComponent(stub), format: "module", shortCircuit: true };
-      }
-      return nextResolve(specifier, context);
-    }`;
-    register(`data:text/javascript,${encodeURIComponent(hooks)}`);
+    const require = createRequire(import.meta.url);
+    require.extensions[".css"] = (module) => {
+      module.exports = {};
+    };
 
     const dom = new JSDOM("<!doctype html><html><body></body></html>", { url: "http://localhost/" });
-    const define = (key, value) => Object.defineProperty(globalThis, key, { value, configurable: true, writable: true });
+    const define = (key, value) =>
+      Object.defineProperty(globalThis, key, { value, configurable: true, writable: true });
     define("window", dom.window);
     define("document", dom.window.document);
     define("navigator", dom.window.navigator);
@@ -137,7 +134,8 @@ describe("OfferingsPage with controlled responses", () => {
     React = ((m) => m.default ?? m)(await import("react"));
     createRoot = ((m) => m.default ?? m)(await import("react-dom/client")).createRoot;
     act = React.act ?? React.unstable_act;
-    OfferingsPage = (await import("../src/components/OfferingsPage.tsx")).default;
+    globalThis.React = React;
+    OfferingsPage = require("../src/components/OfferingsPage.tsx").default;
   });
 
   afterEach(async () => {
