@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { Offering } from "@/types/offering";
+import type { Offering, OfferingErrorResponse } from "@/types/offering";
 import styles from "@/styles/offerings.module.css";
 
 interface OfferingsPageProps {
@@ -11,33 +11,65 @@ interface OfferingsPageProps {
   specialsOnly?: boolean;
 }
 
+async function readErrorMessage(response: Response, fallback: string): Promise<string> {
+  try {
+    const body = (await response.json()) as Partial<OfferingErrorResponse>;
+    const message = body?.error?.message;
+    return typeof message === "string" && message.trim() !== "" ? message : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 export default function OfferingsPage({ title, intro, emptyMessage, specialsOnly = false }: OfferingsPageProps) {
   const [offerings, setOfferings] = useState<Offering[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    let isCurrent = true;
+    const fallbackMessage = `Unable to load ${title.toLowerCase()}.`;
+
     async function loadOfferings() {
+      setIsLoading(true);
+      setError(null);
+
       try {
         const response = await fetch("/api/offerings");
 
         if (!response.ok) {
-          throw new Error(`Unable to load ${title.toLowerCase()}.`);
+          throw new Error(await readErrorMessage(response, fallbackMessage));
         }
 
-        const data: Offering[] = await response.json();
-        setOfferings(data);
+        const data: unknown = await response.json();
+
+        if (!Array.isArray(data)) {
+          throw new Error(fallbackMessage);
+        }
+
+        if (isCurrent) {
+          setOfferings(data as Offering[]);
+        }
       } catch (requestError) {
-        setError(requestError instanceof Error ? requestError.message : `Unable to load ${title.toLowerCase()}.`);
+        if (isCurrent) {
+          setOfferings([]);
+          setError(requestError instanceof Error ? requestError.message : fallbackMessage);
+        }
       } finally {
-        setIsLoading(false);
+        if (isCurrent) {
+          setIsLoading(false);
+        }
       }
     }
 
     loadOfferings();
+
+    return () => {
+      isCurrent = false;
+    };
   }, [title]);
 
-  const visibleOfferings = specialsOnly ? offerings.filter((offering) => offering.specialOffer) : offerings;
+  const visibleOfferings = specialsOnly ? offerings.filter((offering) => offering.specialOffer === true) : offerings;
 
   return (
     <main className={styles.page}>
@@ -47,7 +79,7 @@ export default function OfferingsPage({ title, intro, emptyMessage, specialsOnly
         <p>{intro}</p>
       </header>
 
-      {isLoading && <p>Loading {title.toLowerCase()}...</p>}
+      {isLoading && <p role="status">Loading {title.toLowerCase()}...</p>}
       {error && <p role="alert">{error}</p>}
       {!isLoading && !error && visibleOfferings.length === 0 && <p>{emptyMessage}</p>}
       {!isLoading && !error && visibleOfferings.length > 0 && (
