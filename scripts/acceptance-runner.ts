@@ -23,7 +23,7 @@ const VALID_CATEGORIES = ["Coffee", "Tea", "Smoothie"] as const;
 const baseUrl = getBaseUrl();
 const databaseFailureUrl = getDatabaseFailureUrl();
 
-function getBaseUrl(): string {
+function getBaseUrl(): string {//gets the URL of the local server that the acceptance runner should test
   const configuredUrl = process.env.ACCEPTANCE_BASE_URL ?? DEFAULT_BASE_URL;
 
   const url = parseLoopbackUrl(configuredUrl);
@@ -31,7 +31,7 @@ function getBaseUrl(): string {
   return url.origin;
 }
 
-function getDatabaseFailureUrl(): string | null {
+function getDatabaseFailureUrl(): string | null {//gets the URl for the deliberate database-failure test server
   const configuredUrl = process.env.ACCEPTANCE_DB_FAILURE_URL;
 
   if (!configuredUrl) {
@@ -41,7 +41,7 @@ function getDatabaseFailureUrl(): string | null {
   return parseLoopbackUrl(configuredUrl).origin;
 }
 
-function parseLoopbackUrl(value: string): URL {
+function parseLoopbackUrl(value: string): URL {//checks that the URL you're giving the acceptance runner is actually a local server
   let url: URL;
 
   try {
@@ -69,25 +69,25 @@ function parseLoopbackUrl(value: string): URL {
   return url;
 }
 
-function expect(condition: boolean, message: string): void {
+function expect(condition: boolean, message: string): void {//assertion function
   if (!condition) {
     throw new Error(message);
   }
 }
 
-function expectEqual<T>(actual: T, expected: T, message: string): void {
+function expectEqual<T>(actual: T, expected: T, message: string): void {//compares the actual to the expected
   if (actual !== expected) {
     throw new Error(`${message}\nExpected: ${String(expected)}\nActual: ${String(actual)}`);
   }
 }
 
-function expectObject(value: unknown, message: string): JsonObject {
+function expectObject(value: unknown, message: string): JsonObject {//checks whether sonething is a JavaScript object and not an array
   expect(typeof value === "object" && value !== null && !Array.isArray(value), message);
 
   return value as JsonObject;
 }
 
-function isOffering(value: unknown): value is Offering {
+function isOffering(value: unknown): value is Offering {//checks if its actually a Offering
   if (!expectableObject(value)) {
     return false;
   }
@@ -105,7 +105,7 @@ function isOffering(value: unknown): value is Offering {
   );
 }
 
-function expectableObject(value: unknown): value is JsonObject {
+function expectableObject(value: unknown): value is JsonObject {//
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
