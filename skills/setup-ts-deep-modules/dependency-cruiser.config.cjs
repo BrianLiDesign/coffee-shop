@@ -28,8 +28,7 @@ module.exports = {
   forbidden: [
     {
       name: "entrypoint-boundary-from-app",
-      comment:
-        "App/root code may import a package's entry points (its root files), but nothing inside its subfolders.",
+      comment: "App/root code may import a package's entry points (its root files), but nothing inside its subfolders.",
       severity: "error",
       from: { pathNot: `^${R}/` }, // importer is NOT inside any package
       to: { path: PACKAGE_INTERNALS },
@@ -59,8 +58,7 @@ module.exports = {
     },
     {
       name: "tests-folder-is-private",
-      comment:
-        "A package's tests/ folder is reachable only from tests: nothing else may import fixtures.",
+      comment: "A package's tests/ folder is reachable only from tests: nothing else may import fixtures.",
       severity: "error",
       from: { pathNot: `^${R}/[^/]+/tests/` }, // importer is not itself a test
       to: { path: `^${R}/[^/]+/tests/` },

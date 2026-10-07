@@ -105,6 +105,7 @@ getUser(fromAny({ body: { id: 123 } }));
 ## Workflow
 
 1. **Gather requirements** - ask user:
+
    - What test files have `as` assertions causing problems?
    - Are they dealing with large objects where only some properties matter?
    - Do they need to pass intentionally wrong data for error testing?
