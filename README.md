@@ -2,7 +2,7 @@
 
 A student-built coffee shop site. Customers browse stored offerings and specials, read the shop story, and find contact information. Authorized team members can create, edit, and delete offerings through the management page.
 
-**Existing public site:** [Coffee Shop on Vercel](https://coffee-shop-sigma-rouge.vercel.app/). It currently serves the previous `main` release; this Milestone 3 branch is pending deployment and live verification. See the [deployment guide](docs/milestone-3-deployment.md) and [release evidence](docs/milestone-3-evidence.md). A successful local build is not live deployment evidence.
+**Existing public site:** [Coffee Shop on Vercel](https://coffee-shop-sigma-rouge.vercel.app/). It currently serves the previous `main` release; [Milestone 3 preview](https://coffee-shop-git-feat-milestone-3-release-brianlidesign.vercel.app/) is deployed with Vercel sign-in protection. Database configuration and live operation verification are pending. See the [deployment guide](docs/milestone-3-deployment.md) and [release evidence](docs/milestone-3-evidence.md). A successful local build is not live deployment evidence.
 
 ## Features
 

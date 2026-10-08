@@ -68,7 +68,7 @@ A `page.tsx` file becomes a URL. `src/app/page.tsx` is `/`. A folder under `src/
 
 `src/app/layout.tsx` wraps every page and renders `Navbar` once. Leave the navbar import out of individual pages.
 
-The navbar links to `/`, `/about`, `/menu`, `/specials`, and `/contact`. Only `/` and `/example` have page files today. The other routes appear in the navbar so later page work can attach to them.
+The navbar links to the implemented customer pages `/`, `/about`, `/menu`, `/specials`, and `/contact`. Authorized team members use `/manage-offerings`.
 
 An API route is a `route.ts` file under `src/app/api`. `src/app/api/example/route.ts` handles `GET /api/example` and calls `connectDB()` from `src/database/db.ts`.
 

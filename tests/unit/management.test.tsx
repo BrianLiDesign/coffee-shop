@@ -15,6 +15,28 @@ const offering = {
 const response = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status });
 afterEach(cleanup);
 
+it("keeps the form usable when a failed API returns malformed display fields", async () => {
+  const fetcher = vi
+    .fn()
+    .mockResolvedValueOnce(response([]))
+    .mockResolvedValueOnce(
+      response(
+        { error: { message: {}, fields: { name: { invalid: true }, description: "Try a shorter description." } } },
+        503,
+      ),
+    );
+  vi.stubGlobal("fetch", fetcher);
+  render(<ManageOfferings />);
+  await screen.findByText("No offerings are available right now.");
+  fireEvent.change(screen.getByLabelText("Name"), { target: { value: "New latte" } });
+  fireEvent.change(screen.getByLabelText("Description"), { target: { value: "Oat milk" } });
+  fireEvent.change(screen.getByLabelText("Price"), { target: { value: "4.25" } });
+  fireEvent.click(screen.getByRole("button", { name: "Save offering" }));
+  await screen.findByText("The offering could not be saved.");
+  expect(screen.getByText("Try a shorter description.")).toBeTruthy();
+  expect((screen.getByLabelText("Name") as HTMLInputElement).value).toBe("New latte");
+});
+
 it("edits the selected offering and sends its persisted identity", async () => {
   const fetcher = vi
     .fn()

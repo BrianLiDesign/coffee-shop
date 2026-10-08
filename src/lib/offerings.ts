@@ -8,7 +8,7 @@ import {
   type OfferingCategory,
   type OfferingErrorResponse,
 } from "@/types/offering";
-import { isOffering } from "@/lib/offering-response";
+import { isOffering, readOfferingError } from "@/lib/offering-response";
 
 export function isOfferingCategory(value: string): value is OfferingCategory {
   return OFFERING_CATEGORIES.some((category) => category === value);
@@ -122,8 +122,7 @@ export function sortOfferings(offerings: Offering[]): Offering[] {
 export async function fetchOfferings(signal?: AbortSignal): Promise<Offering[]> {
   const response = await fetch("/api/offerings", { method: "GET", signal });
   if (!response.ok) {
-    const payload = (await response.json().catch(() => null)) as OfferingErrorResponse | null;
-    throw new Error(payload?.error?.message ?? "We could not load the current offerings.");
+    throw new Error((await readOfferingError(response, "We could not load the current offerings.")).message);
   }
 
   const payload: unknown = await response.json();
@@ -164,10 +163,7 @@ async function saveOffering(
   });
 
   if (!response.ok) {
-    const payload = (await response.json().catch(() => null)) as OfferingErrorResponse | null;
-
-    const message = payload?.error?.message ?? "The offering could not be saved.";
-    const fields = payload?.error?.fields ?? {};
+    const { message, fields } = await readOfferingError(response, "The offering could not be saved.");
     throw new OfferingApiError(message, fields);
   }
 
@@ -180,7 +176,6 @@ async function saveOffering(
 export async function deleteOffering(id: string): Promise<void> {
   const response = await fetch(`/api/offerings/${encodeURIComponent(id)}`, { method: "DELETE" });
   if (!response.ok) {
-    const payload = (await response.json().catch(() => null)) as OfferingErrorResponse | null;
-    throw new OfferingApiError(payload?.error?.message ?? "The offering could not be deleted.");
+    throw new OfferingApiError((await readOfferingError(response, "The offering could not be deleted.")).message);
   }
 }

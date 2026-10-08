@@ -2,7 +2,7 @@
 
 ## Verification boundary
 
-This branch implements the release features. Live Vercel deployment, Atlas proof, and each developer's own contributions remain pending until recorded below. Agent-written reference tests do not count as evidence that another developer completed their assignment.
+This branch implements the release features and has a ready Vercel preview. Public production release, live database proof, and each developer's own contributions remain pending until recorded below. Agent-written reference tests do not count as evidence that another developer completed their assignment.
 
 | Requirement                       | Evidence to record                                                                   | Status                                                        |
 | --------------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------- |
@@ -31,14 +31,14 @@ Record the command, result, and commit after the final branch checks. Local disp
 
 - Lint: passed.
 - Typecheck: passed.
-- Vitest: 29 passed; an additional same-origin regression added after browser QA.
+- Vitest: 31 passed, including same-origin and malformed error-envelope regressions.
 - HTTP/database/UI regression suite: 41 passed; includes restart persistence and live-runner cleanup.
 - Production build: passed; routes do not query Atlas during build.
 - Production dependency audit: zero findings after the approved Next.js/React upgrade and Mongoose patch update; rerun before deployment.
-- Standards/spec review: pending.
+- Standards/spec review: no blocking defects; documented follow-ups resolved. See [review report](./milestone-3-review.md).
 
 Local browser evidence: seeded Menu at desktop and 390px mobile widths, no horizontal overflow; created a special through management, edited it, and verified it on Specials after navigation. These checks used disposable local MongoDB. Browser evidence is in `docs/evidence/milestone-3-*.jpg`.
 
-The Vercel project environment panel showed no project variables. Private configuration and new branch deployment remain pending.
+The Vercel project environment panel showed no project variables. Preview deployed commit `693cc0c` successfully at https://coffee-shop-git-feat-milestone-3-release-brianlidesign.vercel.app/. Vercel Authentication protects it from anonymous requests (302). The authenticated browser shows a clear API-unavailable alert and retry button (`docs/evidence/milestone-3-preview-error.jpg`). Private environment configuration, subsequent redeployment, and live create/read proof remain pending. Production must be released after review.
 
 Do not record credentials, populated environment files, or raw database exceptions in evidence.

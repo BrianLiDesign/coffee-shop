@@ -1,25 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { Offering, OfferingErrorResponse } from "@/types/offering";
+import type { Offering } from "@/types/offering";
 import styles from "@/styles/offerings.module.css";
-import { isOffering } from "@/lib/offering-response";
+import { isOffering, readOfferingError } from "@/lib/offering-response";
 
 interface OfferingsPageProps {
   title: string;
   intro: string;
   emptyMessage: string;
   specialsOnly?: boolean;
-}
-
-async function readErrorMessage(response: Response, fallback: string): Promise<string> {
-  try {
-    const body = (await response.json()) as Partial<OfferingErrorResponse>;
-    const message = body?.error?.message;
-    return typeof message === "string" && message.trim() !== "" ? message : fallback;
-  } catch {
-    return fallback;
-  }
 }
 
 export default function OfferingsPage({ title, intro, emptyMessage, specialsOnly = false }: OfferingsPageProps) {
@@ -40,7 +30,7 @@ export default function OfferingsPage({ title, intro, emptyMessage, specialsOnly
         const response = await fetch("/api/offerings");
 
         if (!response.ok) {
-          throw new Error(await readErrorMessage(response, fallbackMessage));
+          throw new Error((await readOfferingError(response, fallbackMessage)).message);
         }
 
         const data: unknown = await response.json();
