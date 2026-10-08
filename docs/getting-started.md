@@ -13,10 +13,10 @@ Install the app, learn the languages and folders, and run it on your machine.
 
 ## Setup for all developers
 
-1. Install [Node.js](https://nodejs.org/) 18 or newer. Continuous integration runs on Node 18, 20, and 22.
+1. Install [Node.js](https://nodejs.org/) 24.x, matching continuous integration and Vercel.
 2. Clone this repository: `git clone <repo-url>`
-3. From the repository root, run `npm install`.
-4. Copy `.env.local.example` to `.env.local`. Ask the tech lead for the `MONGO_URI` value and paste it into that file. Next.js reads `.env.local` automatically, and git ignores it.
+3. From the repository root, run `npm ci`.
+4. Copy `.env.local.example` to `.env.local`. Configure your private `MONGO_URI` and management credentials following README. Next.js reads `.env.local` automatically, and git ignores it.
 5. Open the folder in VS Code or Cursor and install the recommended extensions when prompted: ESLint and Prettier. `.vscode/settings.json` already turns on format on save. ESLint runs Prettier, so leave the default formatter as the workspace setting.
 6. Read [Languages](#languages), [Project structure](#project-structure), and [Contributing](./contributing.md) before you change code.
 
@@ -27,9 +27,9 @@ The home page at `/` loads without MongoDB. `GET /api/example` calls the databas
 | Language or tool           | Where it shows up                                   | What you use it for                                                                        |
 | -------------------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------ |
 | TypeScript (`.ts`, `.tsx`) | `src/`                                              | Pages, components, API routes, and database code. `tsconfig.json` enables strict checking. |
-| React 18                   | `src/app` and `src/components`                      | The user interface. Components are functions that return JSX.                              |
+| React 19                   | `src/app` and `src/components`                      | The user interface. Components are functions that return JSX.                              |
 | CSS                        | `src/app/globals.css` and `src/styles/*.module.css` | Global rules, plus CSS Modules for a single component.                                     |
-| Next.js 14                 | `src/app`                                           | App Router pages and API route handlers.                                                   |
+| Next.js 16                 | `src/app`                                           | App Router pages and API route handlers.                                                   |
 | JavaScript                 | `next.config.js`, `prettier.config.js`              | Tool configuration. Application features go in TypeScript under `src/`.                    |
 | Mongoose                   | `src/database`                                      | Talks to MongoDB.                                                                          |
 
@@ -44,7 +44,7 @@ coffee-shop/
 │   │   ├── layout.tsx           Shared shell. Renders Navbar on every page.
 │   │   ├── page.tsx             Home page, route /
 │   │   ├── globals.css          Global CSS
-│   │   ├── favicon.ico
+│   │   ├── icon.svg             Coffee shop icon
 │   │   ├── example/page.tsx     Example page, route /example
 │   │   └── api/example/route.ts Example API, GET /api/example
 │   ├── components/              Shared React components (Navbar.tsx)
@@ -60,7 +60,7 @@ coffee-shop/
 
 `skills/` and `docs/agents/` are instructions for coding agents. Feature work belongs in `src/`.
 
-There is no `public/` folder. The favicon lives at `src/app/favicon.ico`, which is the App Router location.
+There is no `public/` folder. The icon lives at `src/app/icon.svg`, which is an App Router metadata location.
 
 ## How a page is wired
 

@@ -6,31 +6,41 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "lint:fix": "next lint --fix",
+    "lint": "eslint src tests/unit scripts/*.ts vitest.config.mts",
+    "lint:fix": "npm run lint -- --fix",
     "format": "prettier --write .",
     "preview:offerings": "node scripts/offering-preview-server.mjs",
-    "test": "node --test --import tsx tests/offerings-http.test.mjs tests/database-checker.test.mjs tests/offering-form.test.mjs src/lib/offerings.test.ts tests/special-offering-control.test.mjs",
+    "test": "npm run test:unit && npm run test:regression",
     "test:db": "node --test tests/database-checker.test.mjs",
     "db:check": "node scripts/check-database.mjs",
     "db:check:write": "node scripts/check-database.mjs --write",
     "typecheck": "tsc --noEmit",
     "prepare": "husky",
-    "preview:special-offerings": "node scripts/special-offerings-preview.mjs"
+    "preview:special-offerings": "node scripts/special-offerings-preview.mjs",
+    "test:unit": "vitest run",
+    "test:watch": "vitest",
+    "test:regression": "node --test --import tsx tests/offerings-http.test.mjs tests/database-checker.test.mjs tests/offering-form.test.mjs src/lib/offerings.test.ts tests/special-offering-control.test.mjs tests/seed-offerings.test.mjs",
+    "db:seed": "node --import tsx scripts/seed-offerings.ts",
+    "test:live": "node --import tsx scripts/verify-live.ts",
+    "preflight": "npm run lint && npm run typecheck && npm test && npm run build"
   },
   "dependencies": {
-    "mongoose": "^8",
-    "next": "^14",
-    "react": "^18",
-    "react-dom": "^18"
+    "mongoose": "^8.24.5",
+    "next": "^16.4.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.7",
+    "@types/node": "^24",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "esbuild": "^0.28.2",
-    "eslint": "^8",
-    "eslint-config-next": "^14",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.4.0",
     "eslint-config-prettier": "^9",
     "eslint-plugin-prettier": "^5",
     "husky": "^9",
@@ -39,6 +49,10 @@
     "mongodb-memory-server-core": "^10.4.3",
     "prettier": "^3",
     "tsx": "^4.23.15",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^5.0.3"
+  },
+  "engines": {
+    "node": "24.x"
   }
 }

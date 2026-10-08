@@ -26,7 +26,14 @@ export type CreateOfferingInput = Omit<Offering, "ID" | "specialOffer"> & {
   specialOffer?: boolean;
 };
 
-export type OfferingErrorCode = "INVALID_CONTENT_TYPE" | "INVALID_JSON" | "INVALID_INPUT" | "DATABASE_UNAVAILABLE";
+export type OfferingErrorCode =
+  | "INVALID_CONTENT_TYPE"
+  | "INVALID_JSON"
+  | "INVALID_INPUT"
+  | "DATABASE_UNAVAILABLE"
+  | "UNAUTHORIZED"
+  | "FORBIDDEN"
+  | "NOT_FOUND";
 
 export interface OfferingErrorResponse {
   error: {

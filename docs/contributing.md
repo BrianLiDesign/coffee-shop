@@ -9,7 +9,7 @@ Every change lands on its own branch and pull request. Do not commit directly to
    ```bash
    git checkout main
    git pull origin main
-   npm install
+   npm ci
    ```
 
 2. Open the GitHub issue assigned to you. Use **Create a branch for this issue** when GitHub offers it. Otherwise create the branch locally:

@@ -1,5 +1,15 @@
 # Offering API contract
 
+## Milestone 3 implementation
+
+The historical Milestone 2 planning text below describes the original assignment boundaries. The Milestone 3 branch now reads MongoDB through GET and accepts authorized POST creation. IDs are MongoDB-generated strings; seed data is inserted deliberately rather than served as a fallback. GET returns sorted public data, `[]` when empty, and a sanitized 503 on database failure.
+
+Brian's additional PUT `/api/offerings/[id]` replaces all offering details using the same input rules; omitted special flag defaults false. DELETE removes that offering and returns 204. Invalid identities return 400, missing records 404, missing/invalid management access 401, and cross-origin browser writes 403. PUT/DELETE and POST enforce access independently inside each handler. The [Milestone 3 plan](milestone-3-plan.md) and [deployment guide](milestone-3-deployment.md) supersede the old local-only restriction.
+
+Use Node 24. `npm test` now runs Vitest and the retained Node regression suite. The HTTP harness starts real Next.js routes against a disposable MongoDB database, seeds the starting menu, verifies persisted writes, and checks database failure without a fixture fallback. Ordinary checks never use shared Atlas credentials.
+
+## Historical Milestone 2 contract and assignment notes
+
 Issue [#14](https://github.com/BrianLiDesign/coffee-shop/issues/14) establishes this contract for [Milestone 2](https://github.com/BrianLiDesign/coffee-shop/issues/12). GET is implemented using fixtures today. In the [independent assignment plan](./milestone-2-parallel-work.md), #15 supplies storage and seeding, #16 supplies independently tested GET/POST handlers and runtime validation, #17 supplies the special control/customer display checks, #20 supplies the management form, and #18 supplies acceptance tooling. Brian composes the real routes and UI during final milestone integration. This guide defines later integrated behavior without claiming it is already implemented.
 
 ## Shared types

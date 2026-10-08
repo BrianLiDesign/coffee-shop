@@ -16,6 +16,7 @@ type OfferingFormProps = {
   onFieldChange: <K extends keyof OfferingFormValues>(field: K, value: OfferingFormValues[K]) => void;
   onSubmit: (event: React.FormEvent<HTMLFormElement>, specialOffer: boolean) => Promise<void>;
   specialOffer?: boolean;
+  submitLabel?: string;
 };
 
 export default function OfferingForm({
@@ -25,6 +26,7 @@ export default function OfferingForm({
   onFieldChange,
   onSubmit,
   specialOffer = DEFAULT_SPECIAL_OFFER,
+  submitLabel = "Save offering",
 }: OfferingFormProps) {
   return (
     <form className={styles.form} onSubmit={(event) => onSubmit(event, specialOffer)} noValidate>
@@ -116,7 +118,7 @@ export default function OfferingForm({
       </div>
 
       <button type="submit" className={styles.button} disabled={isSubmitting}>
-        {isSubmitting ? "Saving…" : "Save offering"}
+        {isSubmitting ? "Saving…" : submitLabel}
       </button>
     </form>
   );

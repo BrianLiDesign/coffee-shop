@@ -1,49 +1,67 @@
 # Coffee Shop
 
-A student-built shop site. Customers will browse drinks and food, customize a drink, read the shop story, see discounts, and choose pickup or delivery. The team is learning TypeScript, React, Next.js, and Git while building it.
+A student-built coffee shop site. Customers browse stored offerings and specials, read the shop story, and find contact information. Authorized team members can create, edit, and delete offerings through the management page.
 
-Coding agents that change this repo follow [AGENTS.md](AGENTS.md).
+**Existing public site:** [Coffee Shop on Vercel](https://coffee-shop-sigma-rouge.vercel.app/). It currently serves the previous `main` release; this Milestone 3 branch is pending deployment and live verification. See the [deployment guide](docs/milestone-3-deployment.md) and [release evidence](docs/milestone-3-evidence.md). A successful local build is not live deployment evidence.
 
-## What works today
+## Features
 
-The home page at `/` renders without a database. About, Contact, Menu, and Specials are available. Menu and Specials read the 16 sample offerings from `GET /api/offerings`; three are marked as special. Offering IDs are strings, and `npm test` runs real HTTP GET checks. A starter page lives at `/example`, and `GET /api/example` connects to MongoDB.
+- Public pages: Home (`/`), About (`/about`), Menu (`/menu`), Specials (`/specials`), and Contact (`/contact`).
+- Menu and Specials read MongoDB through `/api/offerings`; Specials uses the saved boolean flag.
+- Protected management at `/manage-offerings`: creation, editing, delete confirmation, validation, and pending/success/error feedback.
+- Loading, empty, error, and retry states, with responsive layouts.
+- Repeatable insert-only seeding of the 16 starting offerings, including three specials.
+- Vitest unit/component tests plus real HTTP and disposable database regression tests.
 
-Database-backed offerings, creation, and the management page are planned Milestone 2 work.
+Create/read are the required Milestone 3 operations. Update/delete are Brian's additional assignment. Customer orders, payments, drink customization, and delivery integrations remain future work. Starter examples at `/example` and `/api/example` are learning references.
 
-## What we are building
+## Tech stack
 
-- Browse drinks with ingredients and prices
-- Customize a drink before ordering
-- Browse food and seasonal offerings
-- Read the coffee shop story
-- Choose pickup or delivery through Grubhub or DoorDash
-- See available discounts
+Next.js 16 App Router, React 19, TypeScript, CSS Modules, MongoDB Atlas, Mongoose 8, Vitest 5, React Testing Library, ESLint, Prettier, and Vercel. Use **Node.js 24.x** and npm, matching CI and the deployment runtime.
 
-## Team
+## Local setup
 
-- Brian — project tech lead
-- Jean — backend
-- Naomi — database
-- Vedika — frontend
-- Aditi — frontend
-- Sofie — backend
+1. Clone the repository and open its root directory.
+2. Install Node.js 24.x, then run `npm ci`.
+3. Copy `.env.local.example` to the ignored `.env.local`.
+4. Privately replace the MongoDB placeholder with a URI containing your assigned database name. Set your management username and a unique password of at least 16 characters.
+5. Run `npm run db:check` to verify real read access.
+6. To deliberately seed this database, run `npm run db:seed -- --confirm`. Reruns insert missing seed records and preserve existing records and edits.
+7. Run `npm run dev` and open [localhost:3000](http://localhost:3000).
+8. Open [management](http://localhost:3000/manage-offerings) and sign in through the browser's credential prompt.
 
-## Start here
+The home page runs without MongoDB. Database pages show a readable error when configuration or connectivity is unavailable; there is no sample-data fallback. Do not share populated environment files or screenshots of credentials.
 
-Learning developers start with the first two guides. Coding agents start with `AGENTS.md`, then open a guide when the task matches it.
+## Environment variables
 
-1. [Getting started](docs/getting-started.md) — install the app, learn the folders, and run it locally.
-2. [Contributing](docs/contributing.md) — one branch and pull request per issue.
-3. [Project setup](docs/project-setup.md) — tools already configured in this repository.
-4. [AGENTS.md](AGENTS.md) — how a coding agent should change this repo.
+| Variable              | Purpose                                                                                       |
+| --------------------- | --------------------------------------------------------------------------------------------- |
+| `MONGO_URI`           | Server-side MongoDB connection string with an explicit shop database                          |
+| `MANAGEMENT_USERNAME` | Private team management username; must not contain a colon                                    |
+| `MANAGEMENT_PASSWORD` | Private management password, at least 16 characters; placeholder values are rejected          |
+| `LIVE_BASE_URL`       | Optional HTTPS origin for deliberate live acceptance checks; loopback HTTP is allowed locally |
 
-## Milestone 2: start your assignment
+Configure these privately in Vercel for the relevant environment. Never hardcode credentials or use a `NEXT_PUBLIC_` prefix for them. Keep preview and production database targets separate.
 
-Open the [independent developer plan](docs/milestone-2-parallel-work.md), find your issue, and read its acceptance criteria. Every assignment can be built, tested, reviewed, and merged without waiting for another developer's issue to finish.
+## Tests and quality checks
 
-- [API contract](docs/offering-api-contract.md): the shared input, response, and error agreement.
-- [Developer guide](docs/milestone-2-developer-guide.md): Atlas setup and individual verification. Run `npm run db:check` for a real read or explicitly run `npm run db:check:write` for disposable write/read/cleanup. Seed tooling is separate work.
-- [Milestone spec](docs/milestone-2-spec.md): the final integrated requirements.
-- [Glossary](CONTEXT.md): offering, special offering, menu, and offering management.
+- `npm run test:unit` runs Vitest once; `npm run test:watch` runs it interactively.
+- `npm run test:regression` checks real HTTP persistence, seeding, database access tooling, and existing frontend behavior.
+- `npm test` runs both suites.
+- `npm run preflight` runs lint, typecheck, all tests, and a production build.
+- `npm run db:check:write` deliberately verifies write/read/cleanup using its own disposable marker.
+- `npm run test:live` reads the explicitly configured live target without writing.
+- `npm run test:live -- --confirm-writes` verifies live create/read and cleans up only its disposable offering.
+- `npm run test:live -- --confirm-writes --all` also verifies updates. Cleanup verifies deletion.
 
-Independent assignment completion and full milestone completion are different. Brian coordinates final integration and each developer's own Atlas evidence under [#12](https://github.com/BrianLiDesign/coffee-shop/issues/12).
+Automated persistence checks start disposable loopback MongoDB instances and require no Atlas credentials. The first run may download MongoDB 7.0.24. Each developer must personally contribute and explain at least three relevant Vitest cases; the shared suite does not establish individual completion.
+
+## Deployment
+
+Follow the [Vercel release guide](docs/milestone-3-deployment.md). Keep customer pages public and management protected. Verify live persistence, responsive behavior, and failure states before replacing the pending live URL above.
+
+## Team and workflow
+
+Brian: tech lead, integration, access control, deployment, documentation, update/delete. Jean: backend handlers. Naomi: database and seeding. Vedika: customer frontend. Aditi: management frontend. Sofie: acceptance tooling and release evidence.
+
+See the [Milestone 3 plan](docs/milestone-3-plan.md) for assignments, acceptance criteria, and the release checklist. Follow [Contributing](docs/contributing.md): one issue, one branch, one reviewed PR into main. Learning developers can start with [Getting started](docs/getting-started.md); agents follow [AGENTS.md](AGENTS.md).
