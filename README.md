@@ -1,43 +1,49 @@
 # Coffee Shop
 
-A coffee shop web application that helps customers explore drinks and food, customize orders, and choose convenient pickup or delivery options.
+A student-built shop site. Customers will browse drinks and food, customize a drink, read the shop story, see discounts, and choose pickup or delivery. The team is learning TypeScript, React, Next.js, and Git while building it.
 
-## Table of Contents
+Coding agents that change this repo follow [AGENTS.md](AGENTS.md).
 
-- [Overview](#overview)
-  - [Purpose](#purpose)
-  - [Planned Features](#planned-features)
-  - [Team](#team)
-- [Getting Started And Contributing](#getting-started-and-contributing)
+## What works today
 
-## Overview
+The home page at `/` renders without a database. About, Contact, Menu, and Specials are available. Menu and Specials read the 16 sample offerings from `GET /api/offerings`; three are marked as special. Offering IDs are strings, and `npm test` runs real HTTP GET checks. A starter page lives at `/example`, and `GET /api/example` connects to MongoDB.
 
-### Purpose
+Database-backed offerings, creation, and the management page are planned Milestone 2 work.
 
-This project gives coffee shop customers a clear way to learn about the shop, explore its menu, and find convenient ordering options. It will present drink ingredients and prices, support drink customization, highlight seasonal food and drink offerings, tell the story of the shop, and show available discounts.
-
-### Planned Features
+## What we are building
 
 - Browse drinks with ingredients and prices
-- Customize drinks before ordering
-- Browse food and seasonal food and drink offerings
+- Customize a drink before ordering
+- Browse food and seasonal offerings
 - Read the coffee shop story
 - Choose pickup or delivery through Grubhub or DoorDash
 - See available discounts
 
-### Team
+## Team
 
-The Coffee Shop team consists of six students. Team responsibilities are listed below:
+- Brian — project tech lead
+- Jean — backend
+- Naomi — database
+- Vedika — frontend
+- Aditi — frontend
+- Sofie — backend
 
-- Brian - Project tech lead for the overall project
-- Jean - Backend; strengths in Java, Python, and TypeScript; interested in team experience and backend work
-- Naomi - Database; also interested in technical team projects, web development, and database work
-- Vedika - Frontend; strengths in Java and Python; interested in GitHub collaboration and design
-- Aditi - Frontend; strengths in HTML, CSS, Java, and Python
-- Sofie - Backend; strengths in HTML, CSS, and Python; interested in collaboration and backend work
+## Start here
 
-## Getting Started And Contributing
+Learning developers start with the first two guides. Coding agents start with `AGENTS.md`, then open a guide when the task matches it.
 
-Visit [getting-started.md](docs/getting-started.md) on info for how to set up this repo.
+1. [Getting started](docs/getting-started.md) — install the app, learn the folders, and run it locally.
+2. [Contributing](docs/contributing.md) — one branch and pull request per issue.
+3. [Project setup](docs/project-setup.md) — tools already configured in this repository.
+4. [AGENTS.md](AGENTS.md) — how a coding agent should change this repo.
 
-Visit [contributing.md](docs/contributing.md) on info for how to contribute to this repo.
+## Milestone 2: start your assignment
+
+Open the [independent developer plan](docs/milestone-2-parallel-work.md), find your issue, and read its acceptance criteria. Every assignment can be built, tested, reviewed, and merged without waiting for another developer's issue to finish.
+
+- [API contract](docs/offering-api-contract.md): the shared input, response, and error agreement.
+- [Developer guide](docs/milestone-2-developer-guide.md): Atlas setup and individual verification. Run `npm run db:check` for a real read or explicitly run `npm run db:check:write` for disposable write/read/cleanup. Seed tooling is separate work.
+- [Milestone spec](docs/milestone-2-spec.md): the final integrated requirements.
+- [Glossary](CONTEXT.md): offering, special offering, menu, and offering management.
+
+Independent assignment completion and full milestone completion are different. Brian coordinates final integration and each developer's own Atlas evidence under [#12](https://github.com/BrianLiDesign/coffee-shop/issues/12).

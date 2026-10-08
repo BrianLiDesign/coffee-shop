@@ -1,0 +1,60 @@
+.page {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 4rem 1.5rem;
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.header h1 {
+  margin: 0.25rem 0 0.75rem;
+  font-size: 2.5rem;
+}
+
+.header p,
+.item p {
+  color: #5f5a55;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #8a4b2a;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.list {
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.25rem 0;
+  border-top: 1px solid #ded8d0;
+}
+
+.item h2 {
+  margin: 0 0 0.4rem;
+  font-size: 1.25rem;
+}
+
+.item p {
+  margin: 0;
+}
+
+.price {
+  flex: 0 0 auto;
+  color: #8a4b2a;
+  font-weight: 700;
+}
