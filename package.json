@@ -9,6 +9,7 @@
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "format": "prettier --write .",
+    "preflight": "npm run typecheck && npm run lint && npm test && npm run build",
     "preview:offerings": "node scripts/offering-preview-server.mjs",
     "test": "node --test --import tsx tests/offerings-http.test.mjs tests/database-checker.test.mjs src/lib/offerings.test.ts && vitest run",
     "test:db": "node --test tests/database-checker.test.mjs",
