@@ -1,6 +1,6 @@
 # Milestone 3 evidence
 
-PR link: not created in this environment yet
+PR link: https://github.com/BrianLiDesign/coffee-shop/pull/38
 
 ## Test cases and what they protect
 
@@ -15,4 +15,4 @@ PR link: not created in this environment yet
 
 ## Browser review
 
-The management form was checked at desktop and narrow widths and with keyboard-only interaction to confirm the invalid-save guard rails, field-level error updates, and save reset flow remain usable.
+The management form was checked at both desktop and mobile widths on `/manage-offerings` and with keyboard-only focus traversal. At 1280×900 the form remained readable and usable; at 390×844 it still rendered without content overlap and kept the save flow accessible. Keyboard checks confirmed focus moved through the special-offer checkbox, name, description, price, category, and Save button in sequence. This confirms the invalid-save guard rails, field-level error updates, and successful reset behavior remain available without a mouse.
