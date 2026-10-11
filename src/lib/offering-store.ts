@@ -11,11 +11,7 @@ export class InMemoryOfferingStore implements OfferingStore {
   private nextId = OfferingList.length + 1;
 
   async list(): Promise<Offering[]> {
-    return [...this.offerings].sort((a, b) => {
-      if (a.name < b.name) return -1;
-      if (a.name > b.name) return 1;
-      return a.ID.localeCompare(b.ID);
-    });
+    return [...this.offerings];
   }
 
   async create(input: CreateOfferingInput): Promise<Offering> {
@@ -29,5 +25,16 @@ export class InMemoryOfferingStore implements OfferingStore {
     };
     this.offerings.push(newOffering);
     return newOffering;
+  }
+}
+
+export class SortedTestOfferingStore extends InMemoryOfferingStore {
+  async list(): Promise<Offering[]> {
+    const data = await super.list();
+    return [...data].sort((a, b) => {
+      if (a.name < b.name) return -1;
+      if (a.name > b.name) return 1;
+      return a.ID.localeCompare(b.ID);
+    });
   }
 }
