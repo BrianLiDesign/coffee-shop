@@ -1,7 +1,7 @@
 import connectDB from "@/database/db";
 import OfferingModel, { type OfferingRecord } from "@/database/offeringModel";
 import { sortOfferings } from "@/lib/offerings";
-import type { Offering } from "@/types/offering";
+import type { CreateOfferingInput, Offering } from "@/types/offering";
 import type { OfferingStore } from "@/server/offering-handlers";
 
 function publicOffering(record: OfferingRecord): Offering {
@@ -15,14 +15,16 @@ function publicOffering(record: OfferingRecord): Offering {
   };
 }
 
+/** Real storage boundary supplied to the separately developed request handlers. */
 export const offeringStore: OfferingStore = {
-  async list() {
+  async list(): Promise<Offering[]> {
     await connectDB();
     return sortOfferings((await OfferingModel.find().lean()).map(publicOffering));
   },
-  async create(input) {
+  async create(input: CreateOfferingInput): Promise<Offering> {
     await connectDB();
-    return publicOffering(await OfferingModel.create(input));
+    const { name, description, price, category, specialOffer } = input;
+    return publicOffering(await OfferingModel.create({ name, description, price, category, specialOffer }));
   },
   async update(id, input) {
     await connectDB();

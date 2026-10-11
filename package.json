@@ -19,7 +19,8 @@
     "preview:special-offerings": "node scripts/special-offerings-preview.mjs",
     "test:unit": "vitest run",
     "test:watch": "vitest",
-    "test:regression": "node --test --import tsx tests/offerings-http.test.mjs tests/database-checker.test.mjs tests/offering-form.test.mjs src/lib/offerings.test.ts tests/special-offering-control.test.mjs tests/seed-offerings.test.mjs",
+    "test:regression": "node --test --import tsx tests/offerings-http.test.mjs tests/database-checker.test.mjs tests/offering-form.test.mjs src/lib/offerings.test.ts tests/special-offering-control.test.mjs tests/seed-offerings.test.mjs tests/offering-storage.test.ts tests/offering-seed-command.test.mjs",
+    "test:storage": "node --test --import tsx tests/offering-storage.test.ts tests/offering-seed-command.test.mjs",
     "db:seed": "node --import tsx scripts/seed-offerings.ts",
     "test:live": "node --import tsx scripts/verify-live.ts",
     "preflight": "npm run lint && npm run typecheck && npm test && npm run build"

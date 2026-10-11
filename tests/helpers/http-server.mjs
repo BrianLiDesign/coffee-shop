@@ -25,7 +25,7 @@ export async function startHttpServer({ seed = true } = {}) {
   };
   try {
     if (seed) {
-      const seeder = spawn(process.execPath, ["--import", "tsx", "scripts/seed-offerings.ts", "--confirm"], {
+      const seeder = spawn(process.execPath, ["--import", "tsx", "scripts/seed-offerings.ts", "--apply"], {
         cwd: projectRoot,
         env: environment,
         windowsHide: true,

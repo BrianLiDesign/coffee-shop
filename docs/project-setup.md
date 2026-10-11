@@ -14,3 +14,8 @@ These tools are already configured. You do not need to add them before writing a
 
 10. **Milestone 3 release.** The [plan](milestone-3-plan.md), [deployment guide](milestone-3-deployment.md), and [evidence record](milestone-3-evidence.md) describe protected management, live verification, and developer contributions. HTTP Basic access is enforced in `src/proxy.ts`, the server management page, and every write handler.
 11. **Tests.** `npm test` runs Vitest unit/component checks and the retained Node regression suite. The HTTP harness starts its own Next.js server with separate output and a seeded disposable MongoDB database. `npm run typecheck` checks TypeScript. See [the Offering contract](./offering-api-contract.md) for current and historical coverage boundaries.
+
+The [test handoff](../tests/unit/README.md) gives Vedika a starting point on `main`.
+Reference tests on this release branch do not count as her personal contributions.
+The retained `npm run test:storage` command covers storage and deliberate seed
+execution from Naomi's merged work; use `npm run db:seed -- --apply` to seed.

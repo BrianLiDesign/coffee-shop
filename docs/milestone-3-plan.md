@@ -38,7 +38,7 @@ These are follow-up contribution assignments, not claims that a developer author
 | Naomi     | Storage and seeding                                           | Public serialization excludes metadata; omitted special flag defaults false; seed rerun preserves edits and unrelated records                      |
 | Jean      | API validation and errors                                     | Valid creation returns 201; invalid input leaves data unchanged; database failure returns sanitized 503                                            |
 | Aditi     | Management form                                               | Pending submission prevents duplicates; failed save preserves fields; confirmed save followed by failed reload reports both outcomes               |
-| Vedika    | Customer pages and responsive checks                          | Pending fetch shows loading; empty response shows empty state; failed response shows alert rather than empty state; add special filtering coverage |
+| Vedika    | Customer pages and responsive checks                          | No-special-offerings feedback; rejected network request shows an error without empty feedback; unreadable API errors show useful fallback feedback |
 | Sofie     | Acceptance tooling and evidence                               | Wrong response status fails acceptance; malformed offering fails; missing read-back fails; maintain browser/live checklist                         |
 | Brian     | Integration, access, deployment, documentation, update/delete | Unauthenticated write denied; authorized write works; missing configuration fails closed; add update/delete regressions                            |
 

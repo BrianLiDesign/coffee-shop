@@ -26,7 +26,7 @@ Next.js 16 App Router, React 19, TypeScript, CSS Modules, MongoDB Atlas, Mongoos
 3. Copy `.env.local.example` to the ignored `.env.local`.
 4. Privately replace the MongoDB placeholder with a URI containing your assigned database name. Set your management username and a unique password of at least 16 characters.
 5. Run `npm run db:check` to verify real read access.
-6. To deliberately seed this database, run `npm run db:seed -- --confirm`. Reruns insert missing seed records and preserve existing records and edits.
+6. To deliberately seed this database, run `npm run db:seed -- --apply`. Reruns insert missing seed records and preserve existing records and edits.
 7. Run `npm run dev` and open [localhost:3000](http://localhost:3000).
 8. Open [management](http://localhost:3000/manage-offerings) and sign in through the browser's credential prompt.
 
@@ -61,6 +61,12 @@ Automated persistence checks start disposable loopback MongoDB instances and req
 Follow the [Vercel release guide](docs/milestone-3-deployment.md). Keep customer pages public and management protected. Verify live persistence, responsive behavior, and failure states before replacing the pending live URL above.
 
 ## Team and workflow
+
+Vedika can start customer-page tests from updated `main` without waiting for this
+release. The [test handoff](tests/unit/README.md) identifies the starter file and
+her three unimplemented Vitest cases. Keep her contributions when integrating
+this branch. Record personal evidence in
+[`docs/milestone-3-evidence.md`](docs/milestone-3-evidence.md).
 
 Brian: tech lead, integration, access control, deployment, documentation, update/delete. Jean: backend handlers. Naomi: database and seeding. Vedika: customer frontend. Aditi: management frontend. Sofie: acceptance tooling and release evidence.
 

@@ -22,7 +22,7 @@ Vercel references: [environment variables](https://vercel.com/docs/environment-v
 
 ## Seed deliberately
 
-Seeding never happens automatically during builds or requests. In a private local shell configured with the intended deployment database URI, run `npm run db:seed -- --confirm`. Confirm the target privately before running it. Seed reruns use stable internal keys and insert-only behavior, so they preserve existing edits and unrelated records. Removing a seeded offering and deliberately rerunning the seed recreates that missing seed record.
+Seeding never happens automatically during builds or requests. In a private local shell configured with the intended deployment database URI, run `npm run db:seed -- --apply`. Confirm the target privately before running it. Seed reruns use stable internal keys and insert-only behavior, so they preserve existing edits and unrelated records. Removing a seeded offering and deliberately rerunning the seed recreates that missing seed record.
 
 ## Verify the live application
 

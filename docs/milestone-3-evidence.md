@@ -16,6 +16,13 @@ This branch implements the release features and has a ready Vercel preview. Publ
 
 ## Developer evidence
 
+The foundation on `main` includes one agent-written loading example and controlled
+test helpers. Vedika's three assigned Vitest cases remain for her to write; she
+does not need to wait for PR #31. See the [test handoff](../tests/unit/README.md).
+Preserve this contribution record and submitted cases during release integration.
+For each contributed test, explain what it protects. Record browser evidence with
+route, viewport, commit, result, and screenshot link.
+
 | Developer | PR      | Three test case names | Explained and reviewed |
 | --------- | ------- | --------------------- | ---------------------- |
 | Brian     | Pending | Pending               | Pending                |
@@ -32,7 +39,7 @@ Record the command, result, and commit after the final branch checks. Local disp
 - Lint: passed.
 - Typecheck: passed.
 - Vitest: 31 passed, including same-origin and malformed error-envelope regressions.
-- HTTP/database/UI regression suite: 41 passed; includes restart persistence and live-runner cleanup.
+- HTTP/database/UI regression suite: 51 passed after reconciling main; includes retained storage/seed checks, restart persistence, and live-runner cleanup.
 - Production build: passed; routes do not query Atlas during build.
 - Production dependency audit: zero findings after the approved Next.js/React upgrade and Mongoose patch update; rerun before deployment.
 - Standards/spec review: no blocking defects; documented follow-ups resolved. See [review report](./milestone-3-review.md).

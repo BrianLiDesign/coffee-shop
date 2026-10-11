@@ -10,7 +10,7 @@ test("insert-only seeding preserves offering edits, IDs, and unrelated records",
   const uri = database.getUri("coffee_seed_test");
   process.env.MONGO_URI = uri;
   const { offeringStore } = await import("../src/database/offeringStore.ts");
-  async function seed(args = ["--confirm"]) {
+  async function seed(args = ["--apply"]) {
     const child = spawn(process.execPath, ["--import", "tsx", "scripts/seed-offerings.ts", ...args], {
       env: { ...process.env, MONGO_URI: uri },
       windowsHide: true,

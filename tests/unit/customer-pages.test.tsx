@@ -16,6 +16,7 @@ const item = {
 };
 const response = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status });
 
+// Agent-written foundation/reference coverage, not a personal contribution.
 it("announces loading while a request is pending", () => {
   vi.stubGlobal(
     "fetch",
@@ -63,3 +64,6 @@ it("shows a readable failure and can retry successfully", async () => {
   await screen.findByRole("heading", { name: "Latte" });
   expect(screen.queryByRole("alert")).toBeNull();
 });
+
+// Issue #35: write three NEW cases. See ./README.md for the assigned scenarios.
+// Keep the reference tests above; do not count them as personal contributions.
