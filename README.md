@@ -37,6 +37,14 @@ Learning developers start with the first two guides. Coding agents start with `A
 3. [Project setup](docs/project-setup.md) — tools already configured in this repository.
 4. [AGENTS.md](AGENTS.md) — how a coding agent should change this repo.
 
+## Customer-page testing: start here
+
+The [Vitest handoff](tests/unit/README.md) explains the runnable customer-page
+starter on `main`, Vedika's three unimplemented cases for #35, and verification
+commands. Record personal contributions in the
+[Milestone 3 evidence table](docs/milestone-3-evidence.md). Customer-page testing
+can start before PR #31 merges; release-only tests remain on that branch.
+
 ## Milestone 2: start your assignment
 
 Open the [independent developer plan](docs/milestone-2-parallel-work.md), find your issue, and read its acceptance criteria. Every assignment can be built, tested, reviewed, and merged without waiting for another developer's issue to finish.

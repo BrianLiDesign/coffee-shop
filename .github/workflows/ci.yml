@@ -34,15 +34,19 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Check types
+        run: npm run typecheck
 
       - name: Dry-run build
         run: npm run build
         env:
-          # These env variables must be set in the repository's secrets
-          # - Settings -> Secrets and variables -> New repository secret
-          MONGO_URI: ${{ secrets.MONGO_URI }}
-          # Add additional environment variables here
+          # Routine checks use controlled responses or disposable local MongoDB.
+          MONGO_URI: ""
 
       - name: Run tests
         run: npm test

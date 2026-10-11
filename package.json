@@ -6,11 +6,15 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "next lint --dir src --dir tests/unit --file vitest.config.mts",
     "lint:fix": "next lint --fix",
     "format": "prettier --write .",
     "preview:offerings": "node scripts/offering-preview-server.mjs",
-    "test": "node --test --import tsx tests/offerings-http.test.mjs tests/database-checker.test.mjs tests/offering-form.test.mjs src/lib/offerings.test.ts tests/special-offering-control.test.mjs tests/offering-storage.test.ts tests/offering-seed-command.test.mjs",
+    "test": "npm run test:unit && npm run test:regression",
+    "test:unit": "vitest run",
+    "test:watch": "vitest",
+    "test:regression": "node --test --import tsx tests/offerings-http.test.mjs tests/database-checker.test.mjs tests/offering-form.test.mjs src/lib/offerings.test.ts tests/special-offering-control.test.mjs tests/offering-storage.test.ts tests/offering-seed-command.test.mjs",
+    "preflight": "npm run lint && npm run typecheck && npm test && npm run build",
     "test:storage": "node --test --import tsx tests/offering-storage.test.ts tests/offering-seed-command.test.mjs",
     "db:seed": "node --import tsx scripts/seed-offerings.ts",
     "test:db": "node --test tests/database-checker.test.mjs",
@@ -27,6 +31,8 @@
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/react": "^16.3.3",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -41,6 +47,7 @@
     "mongodb-memory-server-core": "^10.4.3",
     "prettier": "^3",
     "tsx": "^4.23.15",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^3.2.7"
   }
 }
