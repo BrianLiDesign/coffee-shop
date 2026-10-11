@@ -31,11 +31,17 @@ export default function OfferingsPage({ title, intro, emptyMessage, specialsOnly
     const fallbackMessage = `Unable to load ${title.toLowerCase()}.`;
 
     async function loadOfferings() {
-      setIsLoading(true);
-      setError(null);
-
       try {
-        const response = await fetch("/api/offerings");
+        let response: Response;
+        try {
+          response = await fetch("/api/offerings");
+        } catch {
+          throw new Error(fallbackMessage);
+        }
+
+        if (!response.ok) {
+          throw new Error(await readErrorMessage(response, fallbackMessage));
+        }
 
         if (!response.ok) {
           throw new Error(await readErrorMessage(response, fallbackMessage));
