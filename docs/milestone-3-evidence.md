@@ -2,7 +2,7 @@
 
 ## Verification boundary
 
-This branch implements the release features and has a ready Vercel preview. Public production release, live database proof, and each developer's own contributions remain pending until recorded below. Agent-written reference tests do not count as evidence that another developer completed their assignment.
+PR #31 integrates the release foundation so developers can extend it from `main`. Its merge does not complete the public production release, live database proof, or each developer's own contributions; those remain pending until recorded below. Issue #30 stays open to track the remaining release requirements. Agent-written reference tests do not count as evidence that another developer completed their assignment.
 
 | Requirement                       | Evidence to record                                                                   | Status                                                        |
 | --------------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------- |
@@ -44,8 +44,14 @@ Record the command, result, and commit after the final branch checks. Local disp
 - Production dependency audit: zero findings after the approved Next.js/React upgrade and Mongoose patch update; rerun before deployment.
 - Standards/spec review: no blocking defects; documented follow-ups resolved. See [review report](./milestone-3-review.md).
 
+Foundation merge check on October 12, 2026: `npm ci` and `npm run preflight`
+passed on Node 24.19.0 against implementation `3d90071` with the handoff/documentation
+corrections in this PR. All 31 Vitest and 51 Node regression cases passed, followed
+by the production build. `npm audit --omit=dev` reported zero vulnerabilities.
+These checks used disposable databases and do not establish live Atlas evidence.
+
 Local browser evidence: seeded Menu at desktop and 390px mobile widths, no horizontal overflow; created a special through management, edited it, and verified it on Specials after navigation. These checks used disposable local MongoDB. Browser evidence is in `docs/evidence/milestone-3-*.jpg`.
 
-The Vercel project environment panel showed no project variables. Preview deployed commit `693cc0c` successfully at https://coffee-shop-git-feat-milestone-3-release-brianlidesign.vercel.app/. Vercel Authentication protects it from anonymous requests (302). The authenticated browser shows a clear API-unavailable alert and retry button (`docs/evidence/milestone-3-preview-error.jpg`). Private environment configuration, subsequent redeployment, and live create/read proof remain pending. Production must be released after review.
+At the original preview inspection, the Vercel project environment panel showed no project variables. Preview deployed commit `693cc0c` successfully at https://coffee-shop-git-feat-milestone-3-release-brianlidesign.vercel.app/. Vercel Authentication protected it from anonymous requests (302). The authenticated browser showed a clear API-unavailable alert and retry button (`docs/evidence/milestone-3-preview-error.jpg`). These observations are historical. Merging PR #31 can trigger a production deployment; a passing deployment check does not verify private environment configuration or live create/read persistence. Record fresh production acceptance separately.
 
 Do not record credentials, populated environment files, or raw database exceptions in evidence.

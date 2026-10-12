@@ -60,3 +60,11 @@ Use the agreed HTTP request/response boundary and rendered UI interactions. Unit
 - [ ] Record three personally contributed Vitest cases and merged PR per developer.
 
 The existing Vercel project is `brianlidesign/coffee-shop`, with public URL https://coffee-shop-sigma-rouge.vercel.app/. No deadline has been supplied. Deployment, team contributions, and live evidence must remain pending until verified.
+
+## Foundation integration
+
+Brian authorized pushing and merging PR #31 into `main` on October 12, 2026 to
+unblock follow-up contributions, including Sofie's issue #36. This integrates the
+implementation after automated checks and review. It does not complete the
+release checklist. Keep parent issue #30 and individual assignments open until
+their remaining acceptance criteria have verified evidence.

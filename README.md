@@ -2,7 +2,7 @@
 
 A student-built coffee shop site. Customers browse stored offerings and specials, read the shop story, and find contact information. Authorized team members can create, edit, and delete offerings through the management page.
 
-**Existing public site:** [Coffee Shop on Vercel](https://coffee-shop-sigma-rouge.vercel.app/). It currently serves the previous `main` release; [Milestone 3 preview](https://coffee-shop-git-feat-milestone-3-release-brianlidesign.vercel.app/) is deployed with Vercel sign-in protection. Database configuration and live operation verification are pending. See the [deployment guide](docs/milestone-3-deployment.md) and [release evidence](docs/milestone-3-evidence.md). A successful local build is not live deployment evidence.
+**Existing public site:** [Coffee Shop on Vercel](https://coffee-shop-sigma-rouge.vercel.app/). The Milestone 3 foundation is integrated through PR #31; production deployment, database configuration, and live operation verification must be verified separately. The [Milestone 3 preview](https://coffee-shop-git-feat-milestone-3-release-brianlidesign.vercel.app/) has Vercel sign-in protection. See the [deployment guide](docs/milestone-3-deployment.md) and [release evidence](docs/milestone-3-evidence.md). A successful local build is not live deployment evidence.
 
 ## Features
 
@@ -62,10 +62,11 @@ Follow the [Vercel release guide](docs/milestone-3-deployment.md). Keep customer
 
 ## Team and workflow
 
-Vedika can start customer-page tests from updated `main` without waiting for this
-release. The [test handoff](tests/unit/README.md) identifies the starter file and
-her three unimplemented Vitest cases. Keep her contributions when integrating
-this branch. Record personal evidence in
+After PR #31 merges, developers can start from updated `main`, including Sofie's
+acceptance safeguards in issue #36. Vedika's customer-page test foundation was
+already available before that merge. The [test handoff](tests/unit/README.md)
+identifies her starter file and three assigned Vitest cases. Preserve submitted
+contributions and record personal evidence in
 [`docs/milestone-3-evidence.md`](docs/milestone-3-evidence.md).
 
 Brian: tech lead, integration, access control, deployment, documentation, update/delete. Jean: backend handlers. Naomi: database and seeding. Vedika: customer frontend. Aditi: management frontend. Sofie: acceptance tooling and release evidence.

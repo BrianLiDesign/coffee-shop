@@ -17,3 +17,17 @@ No blocking code findings or scope creep. Persistent handlers, access, validatio
 External requirements remain partial: public production release, live persistence, and each developer's three personal Vitest contributions. Evidence records these as pending.
 
 Standards: one nonblocking heuristic plus stale documentation, all resolved. Spec: zero code findings; three external evidence categories remain incomplete.
+
+## Foundation merge review: October 12, 2026
+
+Parallel Standards and Spec reviewers checked `origin/main` at `9054f88` against
+PR #31 at `3d90071`, including the retained storage, seed, and test foundation.
+
+- Standards: zero blocking violations; one nonblocking duplication heuristic for
+  the accepted offering field names. Existing behavior is covered by tests.
+- Spec: zero blocking implementation defects; the test handoff's description of
+  reference cases and release-only modules was stale. Updated the handoff and
+  release documentation to reflect foundation integration and Sofie's next step.
+
+Brian authorized the foundation merge separately from release completion. Keep
+issue #30 open for deployment, live persistence, and personal test contributions.
