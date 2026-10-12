@@ -1,18 +1,28 @@
-# Milestone 3 evidence
+# Milestone 3 release evidence
 
-PR link: https://github.com/BrianLiDesign/coffee-shop/pull/38
+## Test foundation
 
-## Test cases and what they protect
+Current `main` includes Vitest configuration, controlled component-test helpers,
+and one loading example in `tests/unit/customer-pages.test.tsx`. That example is
+agent-written foundation coverage, not a developer's personal contribution.
+Vedika's three cases for #35 remain for her to write. See the
+[test handoff](../tests/unit/README.md).
 
-1. `rejects invalid submission before sending a write request`  
-   Protects the form from creating a new offering with incomplete or malformed data, ensuring a bad save never reaches the API.
+Release features and their dependent test suites are tracked separately from the
+developer assignments. Controlled responses and disposable local databases do
+not prove live deployment or Atlas persistence.
 
-2. `clears only the corrected field error after a user fixes one input`  
-   Protects the user flow for incremental validation: when one field is corrected, only that field's error clears while unrelated validation errors remain visible.
+## Developer evidence
 
-3. `resets the form and special-offer checkbox after a successful save`  
-   Protects against stale state after a created offering is accepted, making sure the form returns to its default values and the special-offer toggle resets for the next entry.
+| Developer | PR                                                          | Three personally authored test names                                                                                                                                                                    | What each test protects                                                                                                                                                                    | Browser or other evidence                                                                                                             | Explained and reviewed |
+| --------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| Aditi     | [#38](https://github.com/BrianLiDesign/coffee-shop/pull/38) | `rejects invalid submission before sending a write request`; `clears only the corrected field error after a user fixes one input`; `resets the form and special-offer checkbox after a successful save` | Prevents invalid writes; ensures correcting an input clears only that field's validation error; verifies successful creation restores default field values and the special-offer checkbox. | `/manage-offerings` checked at 1280x900 and 390x844; keyboard focus traversed checkbox, name, description, price, category, and Save. | Pending                |
+| Brian     | Pending                                                     | Pending                                                                                                                                                                                                 | Pending                                                                                                                                                                                    | Pending                                                                                                                               | Pending                |
+| Jean      | Pending                                                     | Pending                                                                                                                                                                                                 | Pending                                                                                                                                                                                    | Pending                                                                                                                               | Pending                |
+| Naomi     | Pending                                                     | Pending                                                                                                                                                                                                 | Pending                                                                                                                                                                                    | Pending                                                                                                                               | Pending                |
+| Vedika    | Pending                                                     | Pending                                                                                                                                                                                                 | Pending                                                                                                                                                                                    | Pending                                                                                                                               | Pending                |
+| Sofie     | Pending                                                     | Pending                                                                                                                                                                                                 | Pending                                                                                                                                                                                    | Pending                                                                                                                               | Pending                |
 
-## Browser review
-
-The management form was checked at both desktop and mobile widths on `/manage-offerings` and with keyboard-only focus traversal. At 1280×900 the form remained readable and usable; at 390×844 it still rendered without content overlap and kept the save flow accessible. Keyboard checks confirmed focus moved through the special-offer checkbox, name, description, price, category, and Save button in sequence. This confirms the invalid-save guard rails, field-level error updates, and successful reset behavior remain available without a mouse.
+Record browser evidence with route, viewport, commit, result, and screenshot link.
+Keep credentials and populated environment files out of evidence. Controlled
+responses verify UI behavior; they do not prove live database persistence.

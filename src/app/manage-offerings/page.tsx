@@ -4,7 +4,6 @@ import { useCallback, useEffect, useState } from "react";
 import OfferingForm, { type OfferingFormValues } from "@/components/OfferingForm";
 import {
   fetchOfferings,
-  isOfferingCategory,
   OfferingApiError,
   parseOfferingPrice,
   sortOfferings,
@@ -19,7 +18,6 @@ const initialFormState: OfferingFormValues = {
   description: "",
   price: "",
   category: "Coffee",
-  specialOffer: DEFAULT_SPECIAL_OFFER,
 };
 
 export default function ManageOfferingsPage() {
@@ -27,6 +25,7 @@ export default function ManageOfferingsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
   const [formValues, setFormValues] = useState<OfferingFormValues>(initialFormState);
+  const [specialOffer, setSpecialOffer] = useState(DEFAULT_SPECIAL_OFFER);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState<{
@@ -58,7 +57,7 @@ export default function ManageOfferingsPage() {
     setErrors((current) => ({ ...current, [field]: "" }));
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>, submittedSpecialOffer: boolean) => {
     event.preventDefault();
     if (isSubmitting) {
       return;
@@ -69,7 +68,7 @@ export default function ManageOfferingsPage() {
       description: formValues.description,
       category: formValues.category,
       price: parseOfferingPrice(formValues.price),
-      specialOffer: formValues.specialOffer,
+      specialOffer: submittedSpecialOffer,
     };
 
     const nextErrors = validateOfferingInput(submission);
@@ -91,6 +90,7 @@ export default function ManageOfferingsPage() {
       const createdOffering = await submitOffering(submission);
       setOfferings((current) => sortOfferings([...current, createdOffering]));
       setFormValues(initialFormState);
+      setSpecialOffer(DEFAULT_SPECIAL_OFFER);
       setFeedback({ tone: "success", text: "Offering saved successfully." });
 
       try {
@@ -170,9 +170,10 @@ export default function ManageOfferingsPage() {
           <div className={styles.booleanRow}>
             <input
               id="special-offer"
+              disabled={isSubmitting}
               type="checkbox"
-              checked={formValues.specialOffer}
-              onChange={(event) => updateField("specialOffer", event.target.checked)}
+              checked={specialOffer}
+              onChange={(event) => setSpecialOffer(event.target.checked)}
             />
             <label htmlFor="special-offer">Special offer</label>
           </div>
@@ -183,7 +184,7 @@ export default function ManageOfferingsPage() {
             isSubmitting={isSubmitting}
             onFieldChange={updateField}
             onSubmit={handleSubmit}
-            specialOffer={formValues.specialOffer}
+            specialOffer={specialOffer}
           />
         </section>
       </div>

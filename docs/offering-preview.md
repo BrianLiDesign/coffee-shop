@@ -26,7 +26,8 @@ Available controlled-response scenarios:
 | `?scenario=reload-failure` | Save succeeds, then refresh fails with distinct success feedback |
 
 Field validation is client-side: submit the empty form in any scenario to see
-required-field errors. During `normal` saving, the button remains disabled while
+required-field errors. During `normal` saving, all form controls and the special
+checkbox remain disabled while
 the preview server delays its successful response. The preview-only
 `/__preview/status` endpoint reports scenario request counts and the last
 submitted `specialOffer` value.
@@ -53,3 +54,9 @@ and Space toggles the special-offer checkbox. The mobile check used a 375 px
 viewport: the form stacked into one column and the document had no horizontal
 overflow. Controlled submissions verified both `specialOffer: false` and
 `specialOffer: true`.
+
+`npm test` also runs DOM interaction regressions in `tests/offering-form.test.mjs`.
+They verify the reusable form's optional boolean prop (including its false
+default), pending control locking and duplicate prevention, failed-save value
+retention, and successful-save clearing with reload-failure feedback. These use
+controlled HTTP responses in jsdom and do not establish real persistence.
