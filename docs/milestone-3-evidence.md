@@ -32,6 +32,23 @@ route, viewport, commit, result, and screenshot link.
 | Aditi     | Pending | Pending               | Pending                |
 | Sofie     | Pending | Pending               | Pending                |
 
+Sofie:
+
+PR:
+
+Test case names:
+read-only verification performs no writes
+fails acceptance when GET returns duplicate offering IDs
+fails verification on cleanup failure without deleting pre-existing offerings
+
+Explaination:
+Read-only verification sends no writes: Protects existing database records by ensuring that read-only verification only reads offerings and
+does not create, update, or delete any records.
+Duplicate offering IDs fail verification: Protects data integrity by ensuring that every offering has a unique ID. Duplicate IDs could make
+it unclear which record should be updated or deleted, so verification must fail when duplicates are detected.
+Cleanup failure fails verification without deleting pre-existing records: Protects existing data by ensuring cleanup only targets
+records created during verification. If cleanup fails, verification reports the failure rather than incorrectly claiming success, and pre-existing offerings must not be deleted.
+
 ## Local release checks
 
 Record the command, result, and commit after the final branch checks. Local disposable MongoDB and controlled HTTP responses verify application behavior; they do not establish the deployment database's connectivity.
