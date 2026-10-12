@@ -1,6 +1,6 @@
 # Offering storage and repeatable seeding
 
-[Issue #15](https://github.com/BrianLiDesign/coffee-shop/issues/15) supplies real MongoDB storage independently of the live API and customer pages. The existing fixture-backed route remains unchanged. Brian composes the real storage with the independently developed handlers under parent [#12](https://github.com/BrianLiDesign/coffee-shop/issues/12).
+[Issue #15](https://github.com/BrianLiDesign/coffee-shop/issues/15) supplied real MongoDB storage independently of the live API and customer pages. Its original deliverable left the fixture-backed route unchanged. The Milestone 3 release now composes that storage with the handlers and adds update/remove operations. The independent storage and seed regressions remain enabled.
 
 ## Storage boundary
 

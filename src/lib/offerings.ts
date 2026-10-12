@@ -8,6 +8,7 @@ import {
   type OfferingCategory,
   type OfferingErrorResponse,
 } from "@/types/offering";
+import { isOffering, readOfferingError } from "@/lib/offering-response";
 
 export function isOfferingCategory(value: string): value is OfferingCategory {
   return OFFERING_CATEGORIES.some((category) => category === value);
@@ -121,11 +122,12 @@ export function sortOfferings(offerings: Offering[]): Offering[] {
 export async function fetchOfferings(signal?: AbortSignal): Promise<Offering[]> {
   const response = await fetch("/api/offerings", { method: "GET", signal });
   if (!response.ok) {
-    const payload = (await response.json().catch(() => null)) as OfferingErrorResponse | null;
-    throw new Error(payload?.error?.message ?? "We could not load the current offerings.");
+    throw new Error((await readOfferingError(response, "We could not load the current offerings.")).message);
   }
 
-  const payload = (await response.json()) as Offering[];
+  const payload: unknown = await response.json();
+  if (!Array.isArray(payload) || !payload.every(isOffering))
+    throw new Error("The offering list could not be read. Please try again.");
   return sortOfferings(payload);
 }
 
@@ -140,21 +142,40 @@ export class OfferingApiError extends Error {
 }
 
 export async function submitOffering(input: Partial<CreateOfferingInput>): Promise<Offering> {
+  return saveOffering("/api/offerings", "POST", input);
+}
+
+export async function updateOffering(id: string, input: Partial<CreateOfferingInput>): Promise<Offering> {
+  return saveOffering(`/api/offerings/${encodeURIComponent(id)}`, "PUT", input);
+}
+
+async function saveOffering(
+  url: string,
+  method: "POST" | "PUT",
+  input: Partial<CreateOfferingInput>,
+): Promise<Offering> {
   const normalized = normalizeOfferingInput(input);
 
-  const response = await fetch("/api/offerings", {
-    method: "POST",
+  const response = await fetch(url, {
+    method,
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(normalized),
   });
 
   if (!response.ok) {
-    const payload = (await response.json().catch(() => null)) as OfferingErrorResponse | null;
-
-    const message = payload?.error?.message ?? "The offering could not be saved.";
-    const fields = payload?.error?.fields ?? {};
+    const { message, fields } = await readOfferingError(response, "The offering could not be saved.");
     throw new OfferingApiError(message, fields);
   }
 
-  return (await response.json()) as Offering;
+  const offering: unknown = await response.json();
+  if (!isOffering(offering))
+    throw new OfferingApiError("The server returned an unreadable save result. Reload the list before trying again.");
+  return offering;
+}
+
+export async function deleteOffering(id: string): Promise<void> {
+  const response = await fetch(`/api/offerings/${encodeURIComponent(id)}`, { method: "DELETE" });
+  if (!response.ok) {
+    throw new OfferingApiError((await readOfferingError(response, "The offering could not be deleted.")).message);
+  }
 }

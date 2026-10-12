@@ -18,7 +18,7 @@ require.extensions[".css"] = (module) => {
 globalThis.React = React;
 const { createRoot } = await import("react-dom/client");
 const OfferingForm = require("../src/components/OfferingForm.tsx").default;
-const ManageOfferingsPage = require("../src/app/manage-offerings/page.tsx").default;
+const ManageOfferingsPage = require("../src/components/ManageOfferings.tsx").default;
 const { submitOffering } = require("../src/lib/offerings.ts");
 const values = { name: "Latte", description: "Espresso and milk", price: "4.25", category: "Coffee" };
 
@@ -114,7 +114,7 @@ test("pending saves lock every control, prevent duplicates, retain failures, and
             Object.getOwnPropertyDescriptor(prototype, "value").set.call(element, value);
             element.dispatchEvent(new window.Event("input", { bubbles: true }));
           }
-          field("special-offer").click();
+          mounted.container.querySelector('input[type="checkbox"]').click();
         });
         const form = mounted.container.querySelector("form");
         await act(async () => form.dispatchEvent(new window.Event("submit", { bubbles: true, cancelable: true })));
@@ -139,7 +139,7 @@ test("pending saves lock every control, prevent duplicates, retain failures, and
         assert.equal(field("offering-name").value, succeeds ? "" : "Latte");
         assert.equal(field("offering-description").value, succeeds ? "" : "Espresso and milk");
         assert.equal(field("offering-price").value, succeeds ? "" : "4.25");
-        assert.equal(field("special-offer").checked, !succeeds);
+        assert.equal(mounted.container.querySelector('input[type="checkbox"]').checked, !succeeds);
         assert.equal(field("offering-name").matches(":disabled"), false);
         assert.match(
           mounted.container.textContent,
