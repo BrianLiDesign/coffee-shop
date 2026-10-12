@@ -23,7 +23,8 @@
     "test:storage": "node --test --import tsx tests/offering-storage.test.ts tests/offering-seed-command.test.mjs",
     "db:seed": "node --import tsx scripts/seed-offerings.ts",
     "test:live": "node --import tsx scripts/verify-live.ts",
-    "preflight": "npm run lint && npm run typecheck && npm test && npm run build"
+    "preflight": "npm run lint && npm run typecheck && npm test && npm run build",
+    "test:vitest": "vitest run"
   },
   "dependencies": {
     "mongoose": "^8.24.5",
