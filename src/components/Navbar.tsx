@@ -17,6 +17,9 @@ export default function Navbar() {
   const pathname = usePathname();
   return (
     <nav className={styles.nav} aria-label="Main">
+      <Link className={styles.brand} href="/" aria-label="Pause & Pour home">
+        Pause &amp; Pour
+      </Link>
       <ul className={styles.list}>
         {links.map((link) => {
           const isActive = link.href === pathname;

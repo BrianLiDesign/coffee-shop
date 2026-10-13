@@ -1,6 +1,22 @@
 # Coffee Shop
 
-A student-built coffee shop site. Customers browse stored offerings and specials, read the shop story, and find contact information. Authorized team members can create, edit, and delete offerings through the management page.
+A student-built coffee shop site. Customers browse stored offerings and specials, read the fictional shop story, and view sample hours. Authorized team members can create, edit, and delete offerings through the management page.
+
+The public identity is **Pause & Pour**, a fictional neighborhood café. Home, About,
+Contact, and the shared footer disclose the student-demo context. Sample hours are
+illustrative; there is no physical location or customer contact service. The static
+homepage links to Menu and Specials and works without MongoDB. Shop copy is maintained
+in source, while offering management continues to manage menu data.
+
+The public pages share Arial, a cream/espresso/terracotta palette, sentence-case
+text, and brief copy. Home has one image and two actions; About has a short story;
+Contact has the demo disclosure and sample hours.
+
+The homepage image at `public/images/pause-and-pour-cafe.webp` was generated with the
+built-in imagegen tool for this project. Prompt: a warm editorial landscape of an
+espresso-brown ceramic coffee cup on a wooden table by a sunny café window, with
+softly blurred seating, cream/espresso/terracotta colors, and no people, lettering,
+logos, or watermarks. It illustrates the fictional café.
 
 **Existing public site:** [Coffee Shop on Vercel](https://coffee-shop-sigma-rouge.vercel.app/). The Milestone 3 foundation is integrated through PR #31; production deployment, database configuration, and live operation verification must be verified separately. The [Milestone 3 preview](https://coffee-shop-git-feat-milestone-3-release-brianlidesign.vercel.app/) has Vercel sign-in protection. See the [deployment guide](docs/milestone-3-deployment.md) and [release evidence](docs/milestone-3-evidence.md). A successful local build is not live deployment evidence.
 

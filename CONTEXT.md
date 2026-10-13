@@ -4,6 +4,10 @@ The shop presents its offerings to customers and lets the team maintain the menu
 
 ## Language
 
+**Shop**:
+Pause & Pour, a fictional neighborhood café created for a student project. It has no physical location; its sample hours are illustrative.
+_Avoid_: Real business, operating café
+
 **Offering**:
 A drink or food item available from the shop, with a name, description, price, and category.
 _Avoid_: Product, menu record

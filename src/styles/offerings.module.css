@@ -15,16 +15,14 @@
 
 .header p,
 .item p {
-  color: #5f5a55;
+  color: var(--espresso);
 }
 
 .eyebrow {
   margin: 0;
-  color: #8a4b2a;
+  color: var(--accent);
   font-size: 0.8rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 
 .list {
@@ -41,7 +39,7 @@
   justify-content: space-between;
   gap: 1.5rem;
   padding: 1.25rem 0;
-  border-top: 1px solid #ded8d0;
+  border-top: 1px solid var(--accent);
 }
 
 .item > div {
@@ -51,16 +49,16 @@
 
 .retry {
   padding: 0.75rem 1rem;
-  border: 1px solid #7d4d3e;
+  border: 1px solid var(--accent);
   border-radius: 8px;
-  background: #fffaf7;
-  color: #2f241f;
+  background: var(--cream);
+  color: var(--espresso);
   font: inherit;
   cursor: pointer;
 }
 
 .retry:focus-visible {
-  outline: 3px solid #7d4d3e;
+  outline: 3px solid var(--accent);
   outline-offset: 3px;
 }
 
@@ -84,6 +82,6 @@
 
 .price {
   flex: 0 0 auto;
-  color: #8a4b2a;
+  color: var(--accent);
   font-weight: 700;
 }
