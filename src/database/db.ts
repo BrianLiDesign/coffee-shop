@@ -32,7 +32,13 @@ const connectDB = async (): Promise<typeof mongoose> => {
 
   if (!cached.promise) {
     cached.promise = mongoose
-      .connect(url, { serverSelectionTimeoutMS: 5000, connectTimeoutMS: 5000, socketTimeoutMS: 10000 })
+      .connect(url, {
+        serverSelectionTimeoutMS: 5000,
+        connectTimeoutMS: 5000,
+        socketTimeoutMS: 10000,
+        maxPoolSize: 5,
+        bufferCommands: false,
+      })
       .then(() => mongoose);
   }
 
