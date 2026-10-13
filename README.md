@@ -4,8 +4,6 @@
 
 [Visit Pause & Pour](https://coffee-shop-sigma-rouge.vercel.app/)
 
-Public Menu and Specials reads were verified on October 13, 2026. Live write verification and remaining team evidence are still pending. See the [release evidence](docs/milestone-3-evidence.md).
-
 ## What it does
 
 - Customer pages: Home, About, Menu, Specials, and Contact.
