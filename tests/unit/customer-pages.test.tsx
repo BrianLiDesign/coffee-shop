@@ -3,6 +3,7 @@ import React from "react";
 import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import OfferingsPage from "@/components/OfferingsPage";
+import { jsonResponse, sampleOffering } from "./helpers/offerings";
 
 afterEach(cleanup);
 const props = { title: "Menu", intro: "Our drinks", emptyMessage: "No offerings yet." };
@@ -65,5 +66,54 @@ it("shows a readable failure and can retry successfully", async () => {
   expect(screen.queryByRole("alert")).toBeNull();
 });
 
-// Issue #35: write three NEW cases. See ./README.md for the assigned scenarios.
-// Keep the reference tests above; do not count them as personal contributions.
+// Vedika's three contributed cases from PR #39; keep separate from agent coverage.
+it("Specials shows empty feedback when none are special", async () => {
+  vi.stubGlobal("fetch", vi.fn().mockResolvedValue(jsonResponse([sampleOffering])));
+
+  render(
+    <OfferingsPage {...props} title="Specials" emptyMessage="No specials are available right now." specialsOnly />,
+  );
+
+  expect(await screen.findByText("No specials are available right now.")).toBeTruthy();
+  expect(screen.queryByText("Latte")).toBeNull();
+});
+
+it("network failure shows error instead of empty menu", async () => {
+  vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new TypeError("Failed to fetch")));
+
+  render(<OfferingsPage {...props} />);
+
+  expect(await screen.findByText("Unable to load menu.")).toBeTruthy();
+  expect(screen.queryByText(props.emptyMessage)).toBeNull();
+});
+
+it("unreadable API errors show useful fallback feedback", async () => {
+  vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response("not json", { status: 500 })));
+
+  render(<OfferingsPage {...props} />);
+
+  expect(await screen.findByText("Unable to load menu.")).toBeTruthy();
+  expect(screen.queryByText(props.emptyMessage)).toBeNull();
+});
+
+// Agent-added regression coverage, not a personal contribution.
+it("clears a previous error and announces loading when the title changes", async () => {
+  let finishRequest!: (response: Response) => void;
+  vi.stubGlobal(
+    "fetch",
+    vi
+      .fn()
+      .mockResolvedValueOnce(response({ error: { message: "Please try again." } }, 503))
+      .mockReturnValueOnce(new Promise<Response>((resolve) => (finishRequest = resolve))),
+  );
+  const { rerender } = render(<OfferingsPage {...props} />);
+  await screen.findByRole("alert");
+
+  rerender(<OfferingsPage {...props} title="Specials" specialsOnly />);
+  expect((await screen.findByRole("status")).textContent).toBe("Loading specials...");
+  expect(screen.queryByRole("alert")).toBeNull();
+
+  finishRequest(response([{ ...item, specialOffer: true }]));
+  await screen.findByRole("heading", { name: "Latte" });
+  expect(screen.queryByRole("status")).toBeNull();
+});

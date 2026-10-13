@@ -3,9 +3,12 @@ import { requireManagementAccess } from "@/server/management-access";
 import { normalizeOfferingInput, toErrorEnvelope, validateOfferingInput } from "@/lib/offerings";
 import { OFFERING_CATEGORIES, type OfferingErrorCode } from "@/types/offering";
 
-export interface OfferingStore {
+export interface OfferingCollectionStore {
   list(): Promise<Offering[]>;
   create(input: CreateOfferingInput): Promise<Offering>;
+}
+
+export interface OfferingStore extends OfferingCollectionStore {
   update(id: string, input: CreateOfferingInput): Promise<Offering | null>;
   remove(id: string): Promise<boolean>;
 }
@@ -41,7 +44,8 @@ async function readInput(request: Request): Promise<CreateOfferingInput | Respon
   return normalizeOfferingInput(values);
 }
 
-export function createOfferingHandlers(store: OfferingStore) {
+/** GET/POST need only the independently supplied list/create storage boundary. */
+export function createOfferingCollectionHandlers(store: OfferingCollectionStore) {
   return {
     async GET() {
       try {
@@ -61,6 +65,12 @@ export function createOfferingHandlers(store: OfferingStore) {
         return failure("DATABASE_UNAVAILABLE", "The offering could not be saved. Please try again.", 503);
       }
     },
+  };
+}
+
+export function createOfferingHandlers(store: OfferingStore) {
+  return {
+    ...createOfferingCollectionHandlers(store),
     async PUT(request: Request, id: string) {
       const denied = await requireManagementAccess(request);
       if (denied) return denied;

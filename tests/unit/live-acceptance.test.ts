@@ -162,7 +162,7 @@ it("fails verification on cleanup failure without deleting pre-existing offering
   expect(deletedPaths).toEqual(["/api/offerings/created-id"]);
   expect(deletedPaths).not.toContain("/api/offerings/existing-id");
 
-  // THe pre-existing record must still be present and unchanged
+  // The pre-existing record must still be present and unchanged.
   const finalGet = await fetcher(new URL("/api/offerings", "https://shop.example"));
   const finalOfferings = await finalGet.json();
 

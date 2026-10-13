@@ -300,10 +300,11 @@ describe("OfferingsPage with controlled responses", () => {
     await waitFor(() => assert.equal(alertText(container), "Unable to load menu."));
   });
 
-  it("shows an alert when the request rejects", async () => {
+  it("shows a useful fallback alert rather than an empty menu when the request rejects", async () => {
     stubFetch(() => Promise.reject(new Error("offline")));
     const container = await renderPage(menuProps);
-    await waitFor(() => assert.equal(alertText(container), "offline"));
+    await waitFor(() => assert.equal(alertText(container), "Unable to load menu."));
+    assert.equal(container.textContent.includes(menuProps.emptyMessage), false);
   });
 
   it("treats a non-array 200 body as a failure", async () => {
