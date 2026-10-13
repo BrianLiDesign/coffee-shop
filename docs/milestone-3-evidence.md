@@ -27,10 +27,40 @@ route, viewport, commit, result, and screenshot link.
 | --------- | ----------------------------------------------------------- | --------------------- | ------------------------------------------------------------ |
 | Brian     | Pending                                                     | Pending               | Pending                                                      |
 | Jean      | Pending                                                     | Pending               | Pending                                                      |
-| Naomi     | Pending                                                     | Pending               | Pending                                                      |
+| Naomi     | [#41](https://github.com/BrianLiDesign/coffee-shop/pull/41) | See below             | Explanations below; agent standards/spec review before merge |
 | Vedika    | [#39](https://github.com/BrianLiDesign/coffee-shop/pull/39) | See below             | Explanations below; agent standards/spec review before merge |
 | Aditi     | [#38](https://github.com/BrianLiDesign/coffee-shop/pull/38) | See below             | Explanations below; agent standards/spec review before merge |
 | Sofie     | [#40](https://github.com/BrianLiDesign/coffee-shop/pull/40) | See below             | Explanations below; agent standards/spec review before merge |
+
+### Naomi: issue #32 / PR #41
+
+Naomi submitted three storage cases in `89f90c8`. She disclosed AI assistance
+in the PR description. Agent reconciliation preserves the submitted assertions,
+moves the file to `tests/unit/coffeeshop.test.ts` so Vitest and lint discover it,
+and clarifies its comments. The original `tests/coffeeshop-test.ts` was outside
+the configured test pattern; its passing CI did not execute these three cases.
+This records submitted coverage and agent verification, not independent proof
+of personal authorship or understanding. Naomi's own explanation remains pending.
+
+| Submitted test name                                    | What it protects                                                                                                |
+| ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------- |
+| `returns only public offering fields with a string ID` | Converts the stored identity to the expected public string ID and excludes internal `_id` and `seedKey` fields. |
+| `sorts offerings with identical names by ID`           | Orders equal-name records by ID even when the database returns them in reverse order.                           |
+| `throws an error when the database is unavailable`     | Propagates a connection failure without querying the model or substituting sample data.                         |
+
+Agent validation on October 13, 2026, after reconciling submitted head `89f90c8`
+with main `456532b`: `npm ci` completed on Node 24.19.0, and
+`npm run test:unit -- tests/unit/coffeeshop.test.ts` executed all three cases
+successfully. `npm run preflight` passed lint, typecheck, 125 Vitest cases,
+51 Node regression cases, five acceptance CLI cases, three disposable lifecycle
+cases, one real-application acceptance case, and the production build. The
+disposable seed checks passed both separate-process reruns (16 inserts then zero)
+and preservation of IDs, edited records, and unrelated records. Separate
+standards and spec reviews found no remaining blockers.
+The Vitest cases mock the database boundary. Existing disposable-MongoDB
+storage and seed-command regressions separately verify seed reruns, preserved
+IDs and operator edits, and unrelated records. These checks do not establish
+live Atlas/Vercel acceptance or Naomi's personal database verification.
 
 ### Vedika: issue #35 / PR #39
 

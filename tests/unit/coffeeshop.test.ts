@@ -28,8 +28,7 @@ beforeEach(() => {
   findMock.mockReturnValue({ lean: vi.fn().mockResolvedValue([]) });
 });
 
-/* Test 1 */
-/* Look at the database and return one offering and will check that it ID returns a string */
+// Internal database fields must not leak into the public offering response.
 test("returns only public offering fields with a string ID", async () => {
   findMock.mockReturnValue({ lean: vi.fn().mockResolvedValue([storedOffering("offer-1", "Latte")]) });
 
@@ -48,8 +47,7 @@ test("returns only public offering fields with a string ID", async () => {
   expect(offering).not.toHaveProperty("_id");
 });
 
-/* Test 2 */
-/* This is going to check if the application has 2 offering with the same name  */
+// Equal names still need deterministic ordering by their public IDs.
 test("sorts offerings with identical names by ID", async () => {
   findMock.mockReturnValue({
     lean: vi.fn().mockResolvedValue([storedOffering("offer-b", "Latte"), storedOffering("offer-a", "Latte")]),
@@ -60,9 +58,7 @@ test("sorts offerings with identical names by ID", async () => {
   expect(offerings.map((offering) => offering.ID)).toEqual(["offer-a", "offer-b"]);
 });
 
-/* Test 3 */
-/* If the database rejects, it will test the list return the error  */
-
+// A failed connection must reject rather than return sample or empty data.
 test("throws an error when the database is unavailable", async () => {
   connectDBMock.mockRejectedValue(new Error("Database unavailable"));
 
