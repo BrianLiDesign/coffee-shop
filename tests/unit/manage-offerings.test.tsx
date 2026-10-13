@@ -1,7 +1,10 @@
 // @vitest-environment jsdom
 import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
-import ManageOfferingsPage from "@/app/manage-offerings/page";
+import ManageOfferings from "@/components/ManageOfferings";
+
+// Aditi's three issue #34 cases; agent reconciliation updates the component seam
+// and extends the successful-reset case to cover category restoration.
 
 afterEach(cleanup);
 
@@ -22,7 +25,7 @@ function mockOfferingsApi() {
 
 it("rejects invalid submission before sending a write request", async () => {
   const fetchMock = mockOfferingsApi();
-  render(<ManageOfferingsPage />);
+  render(<ManageOfferings />);
 
   await waitFor(() => expect(fetchMock).toHaveBeenCalled());
   fireEvent.click(screen.getByRole("button", { name: /save offering/i }));
@@ -35,7 +38,7 @@ it("rejects invalid submission before sending a write request", async () => {
 
 it("clears only the corrected field error after a user fixes one input", async () => {
   const fetchMock = mockOfferingsApi();
-  render(<ManageOfferingsPage />);
+  render(<ManageOfferings />);
 
   await waitFor(() => expect(fetchMock).toHaveBeenCalled());
   fireEvent.click(screen.getByRole("button", { name: /save offering/i }));
@@ -73,7 +76,7 @@ it("resets the form and special-offer checkbox after a successful save", async (
 
     throw new Error(`Unexpected ${init.method} request`);
   });
-  render(<ManageOfferingsPage />);
+  render(<ManageOfferings />);
 
   await waitFor(() => expect(fetchMock).toHaveBeenCalled());
   fireEvent.change(screen.getByRole("textbox", { name: /name/i }), {
@@ -83,6 +86,7 @@ it("resets the form and special-offer checkbox after a successful save", async (
     target: { value: "Velvety latte with a touch of cinnamon." },
   });
   fireEvent.change(screen.getByRole("spinbutton", { name: /price/i }), { target: { value: "6.5" } });
+  fireEvent.change(screen.getByRole("combobox", { name: /category/i }), { target: { value: "Tea" } });
   fireEvent.click(screen.getByRole("checkbox", { name: /special offer/i }));
   fireEvent.click(screen.getByRole("button", { name: /save offering/i }));
 
@@ -91,6 +95,7 @@ it("resets the form and special-offer checkbox after a successful save", async (
     expect((screen.getByRole("textbox", { name: /name/i }) as HTMLInputElement).value).toBe("");
     expect((screen.getByRole("textbox", { name: /description/i }) as HTMLTextAreaElement).value).toBe("");
     expect((screen.getByRole("spinbutton", { name: /price/i }) as HTMLInputElement).value).toBe("");
+    expect((screen.getByRole("combobox", { name: /category/i }) as HTMLSelectElement).value).toBe("Coffee");
     expect((screen.getByRole("checkbox", { name: /special offer/i }) as HTMLInputElement).checked).toBe(false);
   });
 });

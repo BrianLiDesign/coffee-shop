@@ -6,17 +6,15 @@ coverage intact.
 
 ## Vedika: issue #35
 
-Start from updated `main`. You can complete this customer-page assignment without
-waiting for PR #31. Extend `customer-pages.test.tsx`, which renders the shared
-`OfferingsPage` component used by `/menu` and `/specials`.
+PR #39 contributes Vedika's three cases in `customer-pages.test.tsx`, which
+renders the shared `OfferingsPage` component used by `/menu` and `/specials`.
 
-The file contains one foundation loading test, browser setup, and cleanup. Vitest
-restores stubbed globals after each test. Optional sample data and a JSON response
-helper are in `helpers/offerings.ts`. None of your assigned Vitest cases has been
-implemented for you. Existing Node regressions cover related UI states; keep them
-and add your own rendered assertions in the Vitest file.
+The file contains five original reference tests, Vedika's three contributed
+cases, and one agent-added reload regression. Keep their attribution comments.
+Vitest restores stubbed globals after each test. Sample data and a JSON response
+helper are in `helpers/offerings.ts`. Existing Node regressions remain enabled.
 
-Personally write three new tests:
+Vedika's contributed cases protect these behaviors:
 
 1. Specials shows its empty feedback when the response contains offerings but none
    have `specialOffer: true`.
@@ -28,9 +26,10 @@ and inspect visible feedback. Async requests require waiting for the resulting U
 Fix any related defects your tests expose. Do not copy the loading example and
 claim it as a contribution, or replace the assigned cases with skipped tests.
 
-Also check Home, About, Contact, Menu, Specials, and navigation at desktop/mobile
-widths and with a keyboard. Capture focus, long-text, and overflow evidence as
-required by [issue #35](https://github.com/BrianLiDesign/coffee-shop/issues/35).
+Agent-performed browser checks cover Home, About, Contact, Menu, Specials,
+navigation, keyboard focus, long text, and overflow at desktop/mobile widths.
+See the [PR #39 evidence](../../docs/evidence/pr39-browser.md) for routes,
+viewports, screenshots, and the controlled-response verification boundary.
 
 ## Commands
 
@@ -39,21 +38,18 @@ required by [issue #35](https://github.com/BrianLiDesign/coffee-shop/issues/35).
 - Watch unit/component tests: `npm run test:watch`.
 - Run all checks before submitting: `npm run preflight`.
 
-Open your own reviewed PR into `main`. Record its link, your three test names,
-what each protects, and browser evidence in
+PR #39, the three test names, and explanations are recorded in
 [`docs/milestone-3-evidence.md`](../../docs/milestone-3-evidence.md).
 Controlled responses verify UI behavior; they do not prove live database persistence.
 
 ## Other developer assignments and release integration
 
-This foundation does not copy the release branch's completed unit suites into
-`main`. Its handler, replacement management component, and live acceptance runner
-are release-only modules until integrated. Their tests stay with PR #31, and their
-owners should follow their live issues for when to start. Compatible baseline
-coverage on current `main` is the loading example above; all existing Node
-regressions remain enabled.
+PR #31 integrates the handlers, replacement management component, live acceptance
+runner, and their reference tests into `main`. After it merges, developers can
+start from updated `main` and follow their assigned issues. Sofie's issue #36
+extends `scripts/live-acceptance.ts` through controlled fetch responses. Deployment
+and live verification remain separate work, tracked in issue #30.
 
-When reconciling PR #31, preserve this handoff and each developer's contributed
-cases. Keep agent-written reference tests distinct from personal contributions.
-Reconcile the Vitest version/configuration with the release runtime, and retain
+Preserve this handoff and each developer's contributed cases. Keep agent-written
+reference tests distinct from personal contributions. Retain
 both unit and regression commands, including storage and seed coverage from `main`.
