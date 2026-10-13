@@ -30,7 +30,7 @@ route, viewport, commit, result, and screenshot link.
 | Naomi     | Pending                                                     | Pending               | Pending                                                      |
 | Vedika    | [#39](https://github.com/BrianLiDesign/coffee-shop/pull/39) | See below             | Explanations below; agent standards/spec review before merge |
 | Aditi     | [#38](https://github.com/BrianLiDesign/coffee-shop/pull/38) | See below             | Explanations below; agent standards/spec review before merge |
-| Sofie     | Pending                                                     | Pending               | Pending                                                      |
+| Sofie     | [#40](https://github.com/BrianLiDesign/coffee-shop/pull/40) | See below             | Explanations below; agent standards/spec review before merge |
 
 ### Vedika: issue #35 / PR #39
 
@@ -84,6 +84,52 @@ sent no write; correcting name retained the description error; successful creati
 reset every field and checkbox. No horizontal overflow or JavaScript exceptions
 were observed. See [browser evidence and screenshots](./evidence/pr38-browser.md).
 Controlled responses do not establish live Atlas or deployment persistence.
+
+### Sofie: issue #36 / PR #40
+
+Sofie submitted the three cases in `fc036de`; `94b96e1` moved them into the
+existing `tests/unit/live-acceptance.test.ts` suite. Agent reconciliation retains
+all three cases and the four earlier regressions. Agent documentation repairs
+and verification do not establish Sofie's personal browser or live checks.
+
+| Personally authored test name                                                   | What it protects                                                                                     |
+| ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `read-only verification performs no writes`                                     | Default read-only verification makes one GET and sends no create, update, or delete requests.        |
+| `fails acceptance when GET returns duplicate offering IDs`                      | Duplicate public identities fail verification before any further requests.                           |
+| `fails verification on cleanup failure without deleting pre-existing offerings` | A failed cleanup rejects verification; DELETE targets only the created ID and never the baseline ID. |
+
+#### Issue #18 reconciliation
+
+[PR #28](https://github.com/BrianLiDesign/coffee-shop/pull/28), merged as
+`e06b7c9`, supplies the independently proven issue #18 tooling. Its
+[acceptance guide](./issue-18-acceptance.md#acceptance-criteria-and-handoff)
+maps every criterion to implementation and evidence. The comparison below
+separates that existing work from this PR's live-runner safeguards.
+
+| Issue #18 requirement                                                                                              | Existing tooling and remaining work                                                                                                                                                                                                         |
+| ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Retain fixture regressions; explicit loopback runner and safe configuration                                        | `test:regression`, `acceptance`, and `tests/acceptance-cli.test.ts` are retained. No runner implementation gap identified.                                                                                                                  |
+| Empty/seeded GET, ordinary/special/default POST, read-back, validation, JSON/content type, IDs, sanitized failures | `scripts/acceptance.ts` and controlled HTTP self-tests cover these scenarios. PR #40 adds separate default read-only and duplicate-ID checks for `verifyLive`.                                                                              |
+| Explicit database-failure setup                                                                                    | The guide describes deliberately stopping the owned database; `test:acceptance:app` exercises actual local application 503 responses. Ordinary failures are not database-failure proof.                                                     |
+| Isolated lifecycle, cleanup refusal, finite teardown, incorrect-response self-tests                                | `disposable-database.ts`, lifecycle tests, controlled-server cases, and CLI tests cover these requirements. PR #40 adds live-runner cleanup-failure and baseline-ID protection coverage. No related runner defect was found in this review. |
+| Manual browser checklist, six-person matrix, commands, integration handoff                                         | Supplied in the guide. Individual browser, refresh/restart, Atlas read/write/cleanup, board, and meeting outcomes remain pending wherever no evidence is recorded.                                                                          |
+| No application persistence claims from stubs                                                                       | Controlled responses prove runner behavior only. Owned-local application checks are separate from live Atlas/Vercel acceptance, which remains pending.                                                                                      |
+
+Issue #18 is already closed following its reviewed tooling merge. This PR does
+not establish the remaining integrated/live evidence under #12 or the production
+release under #30. After Brian prepares the deployment and authorizes live
+writes, record environment alias, deployed commit, date, command, result, and
+evidence link here. Read-only `test:live` and explicitly authorized write checks
+must be recorded separately; any failed cleanup remains a failure.
+
+Agent validation on October 13, 2026, reconciled submitted head `45e3d01`
+with main `9f06594`: `npm run preflight` passed on Node 24.19.0, including
+lint, typecheck, 122 Vitest cases (all seven live-runner cases), 51 Node
+regression cases, five acceptance CLI cases, three disposable lifecycle cases,
+one real-application acceptance case, and the production build. Separate
+standards and spec reviews found no remaining blockers. This evidence uses
+controlled responses and owned local databases; live Atlas/Vercel verification
+and Sofie's personal browser checks remain pending.
 
 ## Local release checks
 
