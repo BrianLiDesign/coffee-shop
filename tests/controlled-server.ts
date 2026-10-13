@@ -1,90 +1,112 @@
-import { spawn } from "node:child_process";
-import { once } from "node:events";
-import { createServer } from "node:net";
-import { setTimeout as delay } from "node:timers/promises";
-import { fileURLToPath } from "node:url";
+import { createServer } from "node:http";
+import type { Offering } from "@/types/offering";
 
-const projectRoot = fileURLToPath(new URL("../", import.meta.url));
+export const seedOffering: Offering = {
+  ID: "seed-id",
+  name: "Seed Tea",
+  description: "Independent seed",
+  price: 2.5,
+  category: "Tea",
+  specialOffer: true,
+};
 
-export async function startControlledServer() {
-  const portReservation = createServer();
-  portReservation.listen(0, "127.0.0.1");
-  await once(portReservation, "listening");
-  const address = portReservation.address();
-  const port = typeof address === "object" && address ? address.port : 3000;
-  await new Promise<void>((resolve, reject) => {
-    portReservation.close((error) => (error ? reject(error) : resolve()));
-  });
-
-  const server = spawn(
-    process.execPath,
-    ["node_modules/next/dist/bin/next", "dev", "--hostname", "127.0.0.1", "--port", String(port)],
-    {
-      cwd: projectRoot,
-      env: {
-        ...process.env,
-        NODE_ENV: "development",
-        MONGO_URI: "",
-        COFFEE_SHOP_HTTP_TEST: "1",
-        NEXT_TELEMETRY_DISABLED: "1",
-      },
-      windowsHide: true,
-      detached: process.platform !== "win32",
-      stdio: ["ignore", "pipe", "pipe"],
-    },
-  );
-
-  let output = "";
-  server.stdout.on("data", (chunk) => {
-    output += chunk.toString();
-  });
-  server.stderr.on("data", (chunk) => {
-    output += chunk.toString();
-  });
-
-  async function stop() {
-    if (server.exitCode !== null || server.signalCode !== null || !server.pid) return;
-
-    const exited = once(server, "exit");
-    if (process.platform === "win32") {
-      const killer = spawn("taskkill", ["/pid", String(server.pid), "/T", "/F"], {
-        windowsHide: true,
-        stdio: "ignore",
+/** Runner self-test only: not the application or persistence evidence. */
+export async function startControlledServer(mode = "correct", seeded = false) {
+  const records: Offering[] = seeded ? [{ ...seedOffering }] : [];
+  let nextId = 0;
+  const server = createServer(async (request, response) => {
+    const send = (status: number, body?: unknown) => {
+      response.writeHead(status, { "Content-Type": "application/json" });
+      response.end(body === undefined ? undefined : JSON.stringify(body));
+    };
+    const error = (status: number, code: string) =>
+      send(status, { error: { code, message: "Request failed safely." } });
+    if (mode === "timeout") return;
+    if (mode === "database-failure" || mode === "leaked-failure") {
+      send(503, {
+        error: {
+          code: "DATABASE_UNAVAILABLE",
+          message: mode === "leaked-failure" ? "mongodb://user:secret@host/db" : "Please retry later.",
+        },
       });
-      await once(killer, "close");
-    } else {
-      process.kill(-server.pid, "SIGTERM");
+      return;
     }
-    await exited;
-  }
-
-  const baseUrl = `http://127.0.0.1:${port}`;
-  const deadline = Date.now() + 90_000;
-
-  try {
-    while (Date.now() < deadline) {
-      if (server.exitCode !== null || server.signalCode !== null) {
-        throw new Error(`Server exited before becoming ready.\n${output}`);
-      }
-
-      try {
-        const response = await fetch(`${baseUrl}/api/offerings`, {
-          signal: AbortSignal.timeout(3000),
-        });
-        await response.arrayBuffer();
-        if (response.ok) {
-          return { baseUrl, stop };
-        }
-      } catch {
-        // app is still starting
-      }
-
-      await delay(250);
+    if (request.method === "GET") {
+      if (mode === "private-get" && !request.headers.authorization) return error(401, "UNAUTHORIZED");
+      const ordered = [...records].sort((a, b) => a.name.localeCompare(b.name) || a.ID.localeCompare(b.ID));
+      send(
+        mode === "wrong-status" ? 500 : 200,
+        mode === "wrong-shape" ? {} : mode === "wrong-order" ? ordered.reverse() : ordered,
+      );
+      return;
     }
-
-    throw new Error(`Server did not become ready in time.\n${output}`);
-  } catch (error) {
-    await stop();
-    throw error;
-  }
+    if (request.headers.authorization !== "Basic dGVhbTp0ZXN0LW9ubHktcGFzc3dvcmQ=") return error(401, "UNAUTHORIZED");
+    if (request.method === "DELETE") {
+      if (mode === "cleanup-failure") return error(503, "DATABASE_UNAVAILABLE");
+      const id = decodeURIComponent(request.url!.split("/").at(-1)!);
+      const index = records.findIndex((record) => record.ID === id);
+      if (index >= 0 && mode !== "cleanup-not-persisted") records.splice(index, 1);
+      send(204);
+      return;
+    }
+    if (request.headers["content-type"] !== "application/json") return error(415, "INVALID_CONTENT_TYPE");
+    let body: Record<string, unknown>;
+    try {
+      let text = "";
+      for await (const chunk of request) text += chunk;
+      body = JSON.parse(text);
+    } catch {
+      return error(400, "INVALID_JSON");
+    }
+    const valid =
+      body &&
+      typeof body === "object" &&
+      !Array.isArray(body) &&
+      typeof body.name === "string" &&
+      body.name.trim().length > 0 &&
+      body.name.trim().length <= 100 &&
+      typeof body.description === "string" &&
+      body.description.trim().length > 0 &&
+      body.description.trim().length <= 500 &&
+      typeof body.price === "number" &&
+      Number.isFinite(body.price) &&
+      body.price >= 0 &&
+      Math.abs(body.price * 100 - Math.round(body.price * 100)) < 0.000001 &&
+      typeof body.category === "string" &&
+      ["Coffee", "Tea", "Smoothie"].includes(body.category) &&
+      (body.specialOffer === undefined || typeof body.specialOffer === "boolean") &&
+      Object.keys(body).every((key) => ["name", "description", "price", "category", "specialOffer"].includes(key));
+    if (!valid) return mode === "accept-invalid" ? send(201, {}) : error(400, "INVALID_INPUT");
+    const offering = {
+      ...body,
+      name: (body.name as string).trim(),
+      description: (body.description as string).trim(),
+      specialOffer: body.specialOffer ?? false,
+      ID: `created-${++nextId}`,
+    } as Offering;
+    if (mode === "wrong-default" && body.specialOffer === undefined) offering.specialOffer = true;
+    if (mode === "wrong-special" && body.specialOffer === true) offering.specialOffer = false;
+    if (mode === "invalid-id") offering.ID = "";
+    if (mode === "duplicate-id") offering.ID = "reused-id";
+    if (mode !== "missing-read-back") records.push(offering);
+    if (mode === "bad-post-body") return send(201, {});
+    if (mode === "internal-fields") return send(201, { ...offering, _id: "internal-id" });
+    if (mode === "malformed-json") {
+      response.writeHead(201, { "Content-Type": "application/json" });
+      response.end("broken");
+      return;
+    }
+    send(201, offering);
+  });
+  await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
+  const address = server.address();
+  if (!address || typeof address === "string") throw new Error("Test listener unavailable");
+  return {
+    baseUrl: `http://127.0.0.1:${address.port}`,
+    records,
+    async stop() {
+      server.closeAllConnections();
+      await new Promise<void>((resolve, reject) => server.close((error) => (error ? reject(error) : resolve())));
+    },
+  };
 }

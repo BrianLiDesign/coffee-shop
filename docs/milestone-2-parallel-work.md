@@ -36,7 +36,7 @@ These are implementation agreements, not claims that the modules already exist.
 - API: Jean's handler construction takes the storage boundary explicitly. His HTTP tests host those handlers with his own store double. Brian later composes the real route with Naomi's storage.
 - Form: Aditi's reusable form accepts optional specialOffer: boolean, default false. It submits that value and handles GET/POST feedback through the published HTTP contract.
 - Special control: Vedika's component accepts checked: boolean and onChange(next: boolean). Brian composes the control and form with shared boolean state. Neither contributor imports the other's unmerged module.
-- Verification: Sofie's acceptance runner targets an explicit loopback server. Its own stub-server self-tests establish runner correctness, not real app persistence. Her disposable database lifecycle checks are independent of Naomi's model.
+- Verification: Sofie's acceptance runner targets an explicit loopback server. Its own stub-server self-tests establish runner correctness, not real app persistence. Her disposable database lifecycle checks are independent of Naomi's model. Commands, deliberate failure setup, and the meeting checklist are in the [issue #18 acceptance guide](./issue-18-acceptance.md).
 
 The public API agreement remains [offering-api-contract.md](./offering-api-contract.md): no new HTTP operations, fields, identity conventions, or product scope.
 
