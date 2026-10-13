@@ -44,6 +44,35 @@
   border-top: 1px solid #ded8d0;
 }
 
+.item > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.retry {
+  padding: 0.75rem 1rem;
+  border: 1px solid #7d4d3e;
+  border-radius: 8px;
+  background: #fffaf7;
+  color: #2f241f;
+  font: inherit;
+  cursor: pointer;
+}
+
+.retry:focus-visible {
+  outline: 3px solid #7d4d3e;
+  outline-offset: 3px;
+}
+
+@media (max-width: 420px) {
+  .page {
+    padding: 2rem 1rem;
+  }
+  .item {
+    gap: 0.75rem;
+  }
+}
+
 .item h2 {
   margin: 0 0 0.4rem;
   font-size: 1.25rem;
