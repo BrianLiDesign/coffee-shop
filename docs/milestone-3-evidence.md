@@ -16,21 +16,53 @@ PR #31 integrates the release foundation so developers can extend it from `main`
 
 ## Developer evidence
 
-The foundation on `main` includes one agent-written loading example and controlled
-test helpers. Vedika's three assigned Vitest cases remain for her to write; she
-does not need to wait for PR #31. See the [test handoff](../tests/unit/README.md).
+The foundation on `main` includes agent-written reference coverage and controlled
+test helpers. Vedika submitted her three assigned cases in PR #39. See the
+[test handoff](../tests/unit/README.md).
 Preserve this contribution record and submitted cases during release integration.
 For each contributed test, explain what it protects. Record browser evidence with
 route, viewport, commit, result, and screenshot link.
 
-| Developer | PR      | Three test case names | Explained and reviewed |
-| --------- | ------- | --------------------- | ---------------------- |
-| Brian     | Pending | Pending               | Pending                |
-| Jean      | Pending | Pending               | Pending                |
-| Naomi     | Pending | Pending               | Pending                |
-| Vedika    | Pending | Pending               | Pending                |
-| Aditi     | Pending | Pending               | Pending                |
-| Sofie     | Pending | Pending               | Pending                |
+| Developer | PR                                                          | Three test case names | Explained and reviewed                                       |
+| --------- | ----------------------------------------------------------- | --------------------- | ------------------------------------------------------------ |
+| Brian     | Pending                                                     | Pending               | Pending                                                      |
+| Jean      | Pending                                                     | Pending               | Pending                                                      |
+| Naomi     | Pending                                                     | Pending               | Pending                                                      |
+| Vedika    | [#39](https://github.com/BrianLiDesign/coffee-shop/pull/39) | See below             | Explanations below; agent standards/spec review before merge |
+| Aditi     | Pending                                                     | Pending               | Pending                                                      |
+| Sofie     | Pending                                                     | Pending               | Pending                                                      |
+
+### Vedika: issue #35 / PR #39
+
+Submitted in Vedika's original commit `e4f7fc3`; agent reconciliation retains all
+three cases and updates the Specials case to use the route's actual title and
+empty feedback.
+
+| Personally authored test name                         | What it protects                                                                                                      |
+| ----------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `Specials shows empty feedback when none are special` | A nonempty response containing only ordinary offerings shows the Specials empty message and hides the ordinary Latte. |
+| `network failure shows error instead of empty menu`   | A rejected fetch shows useful fallback feedback rather than pretending the menu is empty.                             |
+| `unreadable API errors show useful fallback feedback` | An unsuccessful response with a non-JSON body shows useful fallback feedback without empty-menu feedback.             |
+
+Agent-added coverage `clears a previous error and announces loading when the title
+changes` does not count as Vedika's contribution. The original retry regression
+and this new case failed before restoring per-request state resets and passed
+afterward. Main's response validation and retry behavior are preserved.
+
+Agent-performed browser checks against reconciled implementation `533d7e1` cover
+all five customer routes and navigation at 1280×900, 390×844, and 320×780. All 27
+checks passed, including visible keyboard focus, keyboard navigation/retry,
+maximum-length unbroken offering text, and no horizontal overflow. See the
+[browser evidence and screenshots](./evidence/pr39-browser.md).
+These checks use controlled API responses; they do not establish Vedika's
+personal browser verification or live Atlas/deployment acceptance.
+
+Final local validation on October 13, 2026: `npm run preflight` passed with
+116 Vitest cases, 51 Node regression cases, 5 acceptance CLI cases, 3 disposable
+lifecycle cases, and 1 real-application acceptance case, followed by the
+production build. Standards and spec reviews found no remaining blockers.
+The older Node network-error assertion now expects the same readable fallback
+as the contributed Vitest case and confirms no empty-menu feedback.
 
 ## Local release checks
 

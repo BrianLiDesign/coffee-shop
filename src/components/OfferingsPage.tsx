@@ -27,7 +27,12 @@ export default function OfferingsPage({ title, intro, emptyMessage, specialsOnly
       setError(null);
 
       try {
-        const response = await fetch("/api/offerings");
+        let response: Response;
+        try {
+          response = await fetch("/api/offerings");
+        } catch {
+          throw new Error(fallbackMessage);
+        }
 
         if (!response.ok) {
           throw new Error((await readOfferingError(response, fallbackMessage)).message);
