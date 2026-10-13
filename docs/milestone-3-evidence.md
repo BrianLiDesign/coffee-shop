@@ -29,7 +29,7 @@ route, viewport, commit, result, and screenshot link.
 | Jean      | Pending                                                     | Pending               | Pending                                                      |
 | Naomi     | Pending                                                     | Pending               | Pending                                                      |
 | Vedika    | [#39](https://github.com/BrianLiDesign/coffee-shop/pull/39) | See below             | Explanations below; agent standards/spec review before merge |
-| Aditi     | Pending                                                     | Pending               | Pending                                                      |
+| Aditi     | [#38](https://github.com/BrianLiDesign/coffee-shop/pull/38) | See below             | Explanations below; agent standards/spec review before merge |
 | Sofie     | Pending                                                     | Pending               | Pending                                                      |
 
 ### Vedika: issue #35 / PR #39
@@ -63,6 +63,27 @@ lifecycle cases, and 1 real-application acceptance case, followed by the
 production build. Standards and spec reviews found no remaining blockers.
 The older Node network-error assertion now expects the same readable fallback
 as the contributed Vitest case and confirms no empty-menu feedback.
+
+### Aditi: issue #34 / PR #38
+
+Aditi submitted three cases in `19d5b94`. Agent reconciliation in `760f1be`
+targets the current `ManageOfferings` component and extends the reset case to
+change category to Tea and verify restoration to Coffee. These additions retain
+Aditi's cases; agent repairs and browser checks are not personal contribution proof.
+
+| Personally authored test name                                        | What it protects                                                                                                                                        |
+| -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `rejects invalid submission before sending a write request`          | Empty required fields show errors and send no POST.                                                                                                     |
+| `clears only the corrected field error after a user fixes one input` | Correcting name clears its error while description remains invalid.                                                                                     |
+| `resets the form and special-offer checkbox after a successful save` | Successful creation clears name, description and price, restores Coffee, and unchecks the special control. Category coverage was extended by the agent. |
+
+Agent-performed browser checks on October 13, 2026, against `760f1be` passed at
+1280x900 and 390x844 on `/manage-offerings`. Keyboard traversal reached checkbox,
+name, description, price, category, and Save with visible focus. Empty submission
+sent no write; correcting name retained the description error; successful creation
+reset every field and checkbox. No horizontal overflow or JavaScript exceptions
+were observed. See [browser evidence and screenshots](./evidence/pr38-browser.md).
+Controlled responses do not establish live Atlas or deployment persistence.
 
 ## Local release checks
 
