@@ -33,7 +33,7 @@ Seeding never happens automatically during builds or requests. In a private loca
 5. Run `npm run test:live -- --confirm-writes --all` to verify Brian's additional editing behavior too. Never treat a local disposable-database result as live evidence.
 6. In the browser, create a normal offering and a special, refresh, and confirm Menu/Specials behavior. Record the evidence without credentials. Use clearly disposable records and remove only those records after the demonstration.
 7. Demonstrate loading, empty, failed fetch/save, and save-success/reload-failure states in controlled local previews or an isolated preview database. Avoid deliberately breaking the production database for screenshots.
-8. Record the production URL, deployed commit, checks, screenshots, and per-developer contributions in [release evidence](milestone-3-evidence.md). Update README's pending URL only after it is verified.
+8. Record the production URL, deployed commit, checks, screenshots, and per-developer contributions in [release evidence](milestone-3-evidence.md). Keep README's live link and verification status consistent with that evidence.
 
 The smoke runner refuses remote plain HTTP, redirects, credential-bearing URLs, and unknown arguments. Failures print sanitized diagnostics. If cleanup cannot be verified, inspect the uniquely marked Verification offering before retrying; never clear the collection.
 

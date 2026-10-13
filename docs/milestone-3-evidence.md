@@ -2,6 +2,23 @@
 
 ## Verification boundary
 
+### Issue audit: October 13, 2026
+
+All implementation assignments under Milestone 2 and the submitted Milestone 3
+follow-ups #32, #34, #35, and #36 are closed after their reviewed merges. No open
+implementation issue can be closed solely from the existing evidence. The three
+remaining issues track the following work:
+
+| Issue                                                                           | Remaining evidence required for closure                                                                                                                                                                                                                                                                                                                             |
+| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [#12: Milestone 2](https://github.com/BrianLiDesign/coffee-shop/issues/12)      | Each developer's Atlas inspection/read/write/cleanup record; integrated normal/special creation with refresh/restart and Atlas identity checks; board and meeting/demo outcomes. See the [onboarding matrix](./milestone-2-developer-guide.md#team-evidence-matrix) and [demonstration checklist](./issue-18-acceptance.md#manual-browser-demonstration-checklist). |
+| [#30: Milestone 3](https://github.com/BrianLiDesign/coffee-shop/issues/30)      | Private management and separate preview configuration verification; public/access-denied checks; live create/read and additional update/delete with targeted cleanup; remaining personal test explanations and release/submission evidence. Production reads and seeding are verified below.                                                                        |
+| [#33: Jean's API tests](https://github.com/BrianLiDesign/coffee-shop/issues/33) | Three personally contributed Vitest cases, explanations, and a reviewed PR. #16 is already reconciled and closed through [PR #37](https://github.com/BrianLiDesign/coffee-shop/pull/37); its 54 handler checks are agent-written remediation, not Jean's personal contribution.                                                                                     |
+
+Existing submitted contributions remain recorded below. Naomi's personal
+explanation is still pending; Jean and Brian have no personal test record here.
+Neither controlled responses nor disposable-database checks establish live writes.
+
 ### Public offering reads restored: October 13, 2026
 
 Production deployment [4B3zBNxrn](https://vercel.com/brianlidesign/coffee-shop/4B3zBNxrn3B7ZVvHdAZV3z9NjJZM)
@@ -47,15 +64,15 @@ retained for provenance.
 
 PR #31 integrates the release foundation so developers can extend it from `main`. Public production reads are now verified above. Live write acceptance and each developer's unrecorded contributions remain pending. Issue #30 stays open to track the remaining release requirements. Agent-written reference tests do not count as evidence that another developer completed their assignment.
 
-| Requirement                       | Evidence to record                                                                   | Status                                                        |
-| --------------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------- |
-| Public Vercel release             | Verified production URL and deployed Git commit                                      | Verified main `1aaec6d`; see October 13 evidence above        |
-| Live create/read persistence      | Live acceptance output; browser refresh and Atlas inspection of the same offering ID | Live reads verified; live creation remains pending            |
-| Additional update/delete          | Live all-operations acceptance and targeted cleanup                                  | Pending live write acceptance                                 |
-| README                            | Description, setup, tech stack, tests, accurate verified live link                   | Implemented; existing live link recorded                      |
-| Loading, empty, responsive states | Controlled state checks and desktop/mobile screenshots                               | Automated coverage and local desktop/mobile evidence recorded |
-| Frontend API errors               | Failed fetch/save and successful save with failed reload                             | Automated coverage implemented                                |
-| Vitest contribution per developer | At least three personally authored cases and reviewed PR per person                  | Pending individual submissions                                |
+| Requirement                       | Evidence to record                                                                   | Status                                                               |
+| --------------------------------- | ------------------------------------------------------------------------------------ | -------------------------------------------------------------------- |
+| Public Vercel release             | Verified production URL and deployed Git commit                                      | Verified main `1aaec6d`; see October 13 evidence above               |
+| Live create/read persistence      | Live acceptance output; browser refresh and Atlas inspection of the same offering ID | Live reads verified; live creation remains pending                   |
+| Additional update/delete          | Live all-operations acceptance and targeted cleanup                                  | Pending live write acceptance                                        |
+| README                            | Description, setup, tech stack, tests, accurate verified live link                   | Implemented; existing live link recorded                             |
+| Loading, empty, responsive states | Controlled state checks and desktop/mobile screenshots                               | Automated coverage and local desktop/mobile evidence recorded        |
+| Frontend API errors               | Failed fetch/save and successful save with failed reload                             | Automated coverage implemented                                       |
+| Vitest contribution per developer | At least three personally authored cases and reviewed PR per person                  | Four submissions recorded below; remaining personal evidence pending |
 
 ## Developer evidence
 

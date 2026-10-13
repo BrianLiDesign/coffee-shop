@@ -14,7 +14,7 @@ Install the app, learn the languages and folders, and run it on your machine.
 ## Setup for all developers
 
 1. Install [Node.js](https://nodejs.org/) 24.x, matching continuous integration and Vercel.
-2. Clone this repository: `git clone <repo-url>`
+2. Clone this repository: `git clone https://github.com/BrianLiDesign/coffee-shop.git`, then `cd coffee-shop`.
 3. From the repository root, run `npm ci`.
 4. Copy `.env.local.example` to `.env.local`. Configure your private `MONGO_URI` and management credentials following README. Next.js reads `.env.local` automatically, and git ignores it.
 5. Open the folder in VS Code or Cursor and install the recommended extensions when prompted: ESLint and Prettier. `.vscode/settings.json` already turns on format on save. ESLint runs Prettier, so leave the default formatter as the workspace setting.
@@ -45,11 +45,22 @@ coffee-shop/
 │   │   ├── page.tsx             Home page, route /
 │   │   ├── globals.css          Global CSS
 │   │   ├── icon.svg             Coffee shop icon
+│   │   ├── about/page.tsx       About page, route /about
+│   │   ├── contact/page.tsx     Contact page, route /contact
+│   │   ├── menu/page.tsx        Stored menu, route /menu
+│   │   ├── specials/page.tsx    Stored specials, route /specials
+│   │   ├── manage-offerings/   Protected offering management
+│   │   ├── api/offerings/      Offering read/write API routes
 │   │   ├── example/page.tsx     Example page, route /example
 │   │   └── api/example/route.ts Example API, GET /api/example
 │   ├── components/              Shared React components (Navbar.tsx)
 │   ├── styles/                  CSS Modules (navbar.module.css, example.module.css)
-│   └── database/                Mongoose connection (db.ts) and an example User schema
+│   ├── database/               Connection, Offering storage/seeding, example User schema
+│   ├── server/                 HTTP handlers and management access checks
+│   └── types/                  Browser-safe Offering contract
+├── public/                      Static assets, including the café image
+├── tests/                       Unit, HTTP, database, and acceptance checks
+├── scripts/                     Database checks, seeding, previews, and acceptance tooling
 ├── docs/                        Guides for people working in this repo
 ├── .github/                     CI workflow, issue template, pull request template
 ├── .vscode/                     Recommended extensions and editor settings
@@ -60,7 +71,7 @@ coffee-shop/
 
 `skills/` and `docs/agents/` are instructions for coding agents. Feature work belongs in `src/`.
 
-There is no `public/` folder. The icon lives at `src/app/icon.svg`, which is an App Router metadata location.
+The café image lives in `public/images/`. The icon lives at `src/app/icon.svg`.
 
 ## How a page is wired
 
@@ -78,7 +89,9 @@ An API route is a `route.ts` file under `src/app/api`. `src/app/api/example/rout
 - `npm run lint` — ESLint and Prettier
 - `npm run lint:fix` — same checks, with automatic fixes where the tools can apply them
 - `npm run build` — production build
-- `npm test` — runs the offerings HTTP checks using an automatically started local server; no database credentials needed.
+- `npm test` — runs all unit, regression, and acceptance suites; database checks use disposable local MongoDB and need no Atlas credentials.
+- `npm run test:unit` — runs Vitest unit and component tests.
+- `npm run preflight` — lint, typecheck, all tests, and production build.
 - `npm run typecheck` — checks TypeScript without emitting files.
 - `git stash` — set aside uncommitted work so you can switch branches
 - `git stash apply` — restore the most recent stash
@@ -95,7 +108,7 @@ git merge main
 ## Setup for tech leads
 
 1. Create a MongoDB cluster and put its connection string in `.env.local` as `MONGO_URI`.
-2. Add the same value as a repository secret named `MONGO_URI` so GitHub Actions can build. In the repo on GitHub: Settings → Secrets and variables → Actions → New repository secret.
+2. Keep Atlas credentials out of ordinary GitHub Actions checks. CI builds without them and tests against disposable databases. Configure deployment secrets privately using the [Vercel guide](./milestone-3-deployment.md).
 3. Complete [Setup for all developers](#setup-for-all-developers) on your own machine.
 4. Turn on branch protection for `main`:
 

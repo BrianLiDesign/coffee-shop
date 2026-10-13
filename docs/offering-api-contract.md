@@ -2,11 +2,11 @@
 
 ## Milestone 3 implementation
 
-The historical Milestone 2 planning text below describes the original assignment boundaries. The Milestone 3 branch now reads MongoDB through GET and accepts authorized POST creation. IDs are MongoDB-generated strings; seed data is inserted deliberately rather than served as a fallback. GET returns sorted public data, `[]` when empty, and a sanitized 503 on database failure.
+The historical Milestone 2 planning text below describes the original assignment boundaries. Current `main` reads MongoDB through GET and accepts authorized POST creation. IDs are MongoDB-generated strings; seed data is inserted deliberately rather than served as a fallback. GET returns sorted public data, `[]` when empty, and a sanitized 503 on database failure.
 
 Brian's additional PUT `/api/offerings/[id]` replaces all offering details using the same input rules; omitted special flag defaults false. DELETE removes that offering and returns 204. Invalid identities return 400, missing records 404, missing/invalid management access 401, and cross-origin browser writes 403. PUT/DELETE and POST enforce access independently inside each handler. The [Milestone 3 plan](milestone-3-plan.md) and [deployment guide](milestone-3-deployment.md) supersede the old local-only restriction.
 
-Use Node 24. `npm test` now runs Vitest and the retained Node regression suite. The HTTP harness starts real Next.js routes against a disposable MongoDB database, seeds the starting menu, verifies persisted writes, and checks database failure without a fixture fallback. Ordinary checks never use shared Atlas credentials.
+Use Node 24. `npm test` runs Vitest, Node regressions, and acceptance CLI/database/application suites. The HTTP harness starts real Next.js routes against a disposable MongoDB database, seeds the starting menu, verifies persisted writes, and checks database failure without a fixture fallback. Ordinary checks never use shared Atlas credentials.
 
 ## Historical Milestone 2 contract and assignment notes
 
@@ -105,13 +105,15 @@ Example validation response:
 
 Clients use the readable message and field messages, retain input on failure, and announce feedback accessibly. Errors must not include credentials, connection strings, raw database exceptions, or internal document fields.
 
-## Running the HTTP regression checks
+## Historical HTTP regression setup (issue #14)
+
+This section records the fixture-backed harness before persistence integration. For current commands and coverage, use the Milestone 3 implementation summary above.
 
 After installing dependencies, run `npm test`. Node's built-in test runner starts a real Next.js development server on an available loopback port and exercises GET over HTTP. It requires no separately running app and no database credentials. Output goes into ignored `.next-http-test`, leaving the normal `.next` build alone. The harness clears `MONGO_URI` for its child process and stops its process tree at teardown.
 
 These checks cover string identity, the 16-item starting menu and public fields, and the three specials flags. They do not claim database persistence or POST coverage. Check types with `npm run typecheck`; run lint and build separately.
 
-Use Node 18 or newer, matching the current CI matrix. The harness uses Node's [test runner](https://nodejs.org/api/test.html) and Next.js's [custom output directory](https://nextjs.org/docs/14/app/api-reference/next-config-js/distDir).
+That historical harness used the Node 18/20/22 matrix. Current development and CI require Node 24. The harness uses Node's test runner and a separate Next.js output directory.
 
 ## Independent checks and integrated persistence checks
 

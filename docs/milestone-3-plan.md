@@ -1,5 +1,15 @@
 # Milestone 3: live offerings and release quality
 
+## Current status: October 13, 2026
+
+The release foundation and submitted follow-ups #32, #34, #35, and #36 are merged
+into `main`. Public production reads and deliberate seeding are verified. Issue
+#33 remains open for Jean's personal API tests. Parent #30 remains open for live
+write/access verification and remaining release and personal contribution evidence.
+See the [issue audit and evidence](./milestone-3-evidence.md#issue-audit-october-13-2026).
+The work order below preserves the original implementation plan; unchecked release
+items still require their own recorded outcomes.
+
 ## Approved scope
 
 Brian requested a new branch implementing the release features and this plan. Create/read are the required Milestone 2 operations. Update/delete are Brian's additional assignment. Brian subsequently approved a supported Next.js upgrade after the deployment audit found critical vulnerabilities in the old runtime. Customer ordering, payments, and a redesign remain outside this release.

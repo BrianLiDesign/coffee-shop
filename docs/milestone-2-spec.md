@@ -2,7 +2,7 @@
 
 > Coordination update, October 2, 2026: [independent assignments](./milestone-2-parallel-work.md) supersede earlier owner/dependency and completion sequencing. Each assignment can finish independently; full-team Atlas and integrated persistence evidence still gate parent #12. #14 shipped string IDs and real HTTP GET tests. Checker/seed commands remain planned until implemented.
 
-Status: product scope is published in [parent #12](https://github.com/BrianLiDesign/coffee-shop/issues/12). The [independent assignments](./milestone-2-parallel-work.md) define the revised delivery plan; live issues define personal acceptance criteria. The requirements below describe the finished milestone, not currently implemented capabilities.
+Status: this is the historical scope published in [parent #12](https://github.com/BrianLiDesign/coffee-shop/issues/12). Its implementation assignments are merged and closed. Parent #12 remains open for individual Atlas access and integrated demonstration evidence. The [Milestone 3 plan](./milestone-3-plan.md) supersedes the original local-only deployment boundary; [release evidence](./milestone-3-evidence.md) records current verification. Future-tense statements below preserve the original planning context.
 
 ## Problem Statement
 

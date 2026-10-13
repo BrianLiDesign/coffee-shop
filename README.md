@@ -1,90 +1,59 @@
 # Coffee Shop
 
-A student-built coffee shop site. Customers browse stored offerings and specials, read the fictional shop story, and view sample hours. Authorized team members can create, edit, and delete offerings through the management page.
+**Pause & Pour** is a student-built, fictional café website. Browse the menu and specials, read the shop story, or view sample hours. Authorized team members can create, edit, and delete offerings.
 
-The public identity is **Pause & Pour**, a fictional neighborhood café. Home, About,
-Contact, and the shared footer disclose the student-demo context. Sample hours are
-illustrative; there is no physical location or customer contact service. The static
-homepage links to Menu and Specials and works without MongoDB. Shop copy is maintained
-in source, while offering management continues to manage menu data.
+[Visit Pause & Pour](https://coffee-shop-sigma-rouge.vercel.app/)
 
-The public pages share Arial, a cream/espresso/terracotta palette, sentence-case
-text, and brief copy. Home has one image and two actions; About has a short story;
-Contact has the demo disclosure and sample hours.
+Public Menu and Specials reads were verified on October 13, 2026. Live write verification and remaining team evidence are still pending. See the [release evidence](docs/milestone-3-evidence.md).
 
-The homepage image at `public/images/pause-and-pour-cafe.webp` was generated with the
-built-in imagegen tool for this project. Prompt: a warm editorial landscape of an
-espresso-brown ceramic coffee cup on a wooden table by a sunny café window, with
-softly blurred seating, cream/espresso/terracotta colors, and no people, lettering,
-logos, or watermarks. It illustrates the fictional café.
+## What it does
 
-**Public site:** [Pause & Pour on Vercel](https://coffee-shop-sigma-rouge.vercel.app/). Production commit `1aaec6d` was verified on October 13, 2026: Menu reads 16 stored offerings and Specials shows three, including after refresh. Live create/update/delete acceptance remains pending. The [Milestone 3 preview](https://coffee-shop-git-feat-milestone-3-release-brianlidesign.vercel.app/) has Vercel sign-in protection. See the [deployment guide](docs/milestone-3-deployment.md) and [release evidence](docs/milestone-3-evidence.md). A successful local build is not live deployment evidence.
+- Customer pages: Home, About, Menu, Specials, and Contact.
+- Menu and Specials load stored offerings from MongoDB, with loading, empty, error, and retry feedback.
+- Protected management at `/manage-offerings` supports creation, editing, and confirmed deletion.
+- Repeatable seeding supplies 16 starting offerings, including three specials, and preserves existing edits.
 
-## Features
+This is a demo with no physical location or customer contact service. Orders, payments, customization, and delivery are future work. The homepage works without MongoDB. Starter routes `/example` and `/api/example` remain learning references.
 
-- Public pages: Home (`/`), About (`/about`), Menu (`/menu`), Specials (`/specials`), and Contact (`/contact`).
-- Menu and Specials read MongoDB through `/api/offerings`; Specials uses the saved boolean flag.
-- Protected management at `/manage-offerings`: creation, editing, delete confirmation, validation, and pending/success/error feedback.
-- Loading, empty, error, and retry states, with responsive layouts.
-- Repeatable insert-only seeding of the 16 starting offerings, including three specials.
-- Vitest unit/component tests plus real HTTP and disposable database regression tests.
+## Run locally
 
-Create/read are the required Milestone 3 operations. Update/delete are Brian's additional assignment. Customer orders, payments, drink customization, and delivery integrations remain future work. Starter examples at `/example` and `/api/example` are learning references.
+Use **Node.js 24.x** and npm.
 
-## Tech stack
+```bash
+npm ci
+```
 
-Next.js 16 App Router, React 19, TypeScript, CSS Modules, MongoDB Atlas, Mongoose 8, Vitest 5, React Testing Library, ESLint, Prettier, and Vercel. Use **Node.js 24.x** and npm, matching CI and the deployment runtime.
+1. Copy `.env.local.example` to `.env.local`.
+2. Privately set `MONGO_URI` to your assigned database, plus `MANAGEMENT_USERNAME` and a unique `MANAGEMENT_PASSWORD` of at least 16 characters. Keep this file out of Git.
+3. Check database read access with `npm run db:check`.
+4. If you want the starting menu in that database, deliberately run `npm run db:seed -- --apply`.
+5. Start the app with `npm run dev` and open [localhost:3000](http://localhost:3000).
 
-## Local setup
+Visit `/manage-offerings` and sign in through the browser credential prompt. Database pages show an error if the database is unavailable; they do not fall back to sample data.
 
-1. Clone the repository and open its root directory.
-2. Install Node.js 24.x, then run `npm ci`.
-3. Copy `.env.local.example` to the ignored `.env.local`.
-4. Privately replace the MongoDB placeholder with a URI containing your assigned database name. Set your management username and a unique password of at least 16 characters.
-5. Run `npm run db:check` to verify real read access.
-6. To deliberately seed this database, run `npm run db:seed -- --apply`. Reruns insert missing seed records and preserve existing records and edits.
-7. Run `npm run dev` and open [localhost:3000](http://localhost:3000).
-8. Open [management](http://localhost:3000/manage-offerings) and sign in through the browser's credential prompt.
+For the folder map, onboarding, and troubleshooting, read [Getting started](docs/getting-started.md) and the [database setup guide](docs/milestone-2-developer-guide.md).
 
-The home page runs without MongoDB. Database pages show a readable error when configuration or connectivity is unavailable; there is no sample-data fallback. Do not share populated environment files or screenshots of credentials.
+## Check your work
 
-## Environment variables
+| Command              | Purpose                                          |
+| -------------------- | ------------------------------------------------ |
+| `npm run test:unit`  | Vitest unit and component tests                  |
+| `npm run test:watch` | Vitest in watch mode                             |
+| `npm test`           | All unit, regression, and acceptance tests       |
+| `npm run preflight`  | Lint, typecheck, all tests, and production build |
 
-| Variable              | Purpose                                                                                       |
-| --------------------- | --------------------------------------------------------------------------------------------- |
-| `MONGO_URI`           | Server-side MongoDB connection string with an explicit shop database                          |
-| `MANAGEMENT_USERNAME` | Private team management username; must not contain a colon                                    |
-| `MANAGEMENT_PASSWORD` | Private management password, at least 16 characters; placeholder values are rejected          |
-| `LIVE_BASE_URL`       | Optional HTTPS origin for deliberate live acceptance checks; loopback HTTP is allowed locally |
+Automated database tests use disposable local MongoDB and need no Atlas credentials. MongoDB may download on the first run. Live checks are separate and described in the [deployment guide](docs/milestone-3-deployment.md).
 
-Configure these privately in Vercel for the relevant environment. Never hardcode credentials or use a `NEXT_PUBLIC_` prefix for them. Keep preview and production database targets separate.
+## Stack and team
 
-## Tests and quality checks
+Next.js 16, React 19, TypeScript, CSS Modules, MongoDB Atlas, Mongoose, Vitest, React Testing Library, ESLint, Prettier, and Vercel.
 
-- `npm run test:unit` runs Vitest once; `npm run test:watch` runs it interactively.
-- `npm run test:regression` checks real HTTP persistence, seeding, database access tooling, and existing frontend behavior.
-- `npm test` runs both suites.
-- `npm run preflight` runs lint, typecheck, all tests, and a production build.
-- `npm run db:check:write` deliberately verifies write/read/cleanup using its own disposable marker.
-- `npm run test:live` reads the explicitly configured live target without writing.
-- `npm run test:live -- --confirm-writes` verifies live create/read and cleans up only its disposable offering.
-- `npm run test:live -- --confirm-writes --all` also verifies updates. Cleanup verifies deletion.
+Brian leads integration, access control, deployment, and documentation. Jean handles backend work; Naomi database and seeding; Vedika customer pages; Aditi management UI; Sofie acceptance tooling and evidence.
 
-Automated persistence checks start disposable loopback MongoDB instances and require no Atlas credentials. The first run may download MongoDB 7.0.24. Each developer must personally contribute and explain at least three relevant Vitest cases; the shared suite does not establish individual completion.
+Start from updated `main`. Follow [Contributing](docs/contributing.md): one issue, one branch, one reviewed PR. Each developer records three personally contributed Vitest cases and explanations in the [release evidence](docs/milestone-3-evidence.md).
 
-## Deployment
-
-Follow the [Vercel release guide](docs/milestone-3-deployment.md). Keep customer pages public and management protected. Verify live persistence, responsive behavior, and failure states before replacing the pending live URL above.
-
-## Team and workflow
-
-After PR #31 merges, developers can start from updated `main`, including Sofie's
-acceptance safeguards in issue #36. Vedika's customer-page test foundation was
-already available before that merge. The [test handoff](tests/unit/README.md)
-identifies her starter file and three assigned Vitest cases. Preserve submitted
-contributions and record personal evidence in
-[`docs/milestone-3-evidence.md`](docs/milestone-3-evidence.md).
-
-Brian: tech lead, integration, access control, deployment, documentation, update/delete. Jean: backend handlers. Naomi: database and seeding. Vedika: customer frontend. Aditi: management frontend. Sofie: acceptance tooling and release evidence.
-
-See the [Milestone 3 plan](docs/milestone-3-plan.md) for assignments, acceptance criteria, and the release checklist. Follow [Contributing](docs/contributing.md): one issue, one branch, one reviewed PR into main. Learning developers can start with [Getting started](docs/getting-started.md); agents follow [AGENTS.md](AGENTS.md).
+- [Milestone 3 plan and remaining release work](docs/milestone-3-plan.md)
+- [Deployment and live verification](docs/milestone-3-deployment.md)
+- [Offering API contract](docs/offering-api-contract.md)
+- [Shop design and image provenance](docs/evidence/pause-and-pour/README.md)
+- [Agent instructions](AGENTS.md)

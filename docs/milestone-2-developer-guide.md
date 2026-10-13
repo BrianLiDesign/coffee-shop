@@ -1,6 +1,6 @@
 # Milestone 2 developer setup and verification
 
-> Coordination update: [independent assignments](./milestone-2-parallel-work.md) define personal completion. #13 now supplies the database checker below. Full-team Atlas access and integrated persistence evidence still gate parent #12. Seed tooling remains separate work in #15.
+> Current status: the database checker and insert-only seed tooling are merged. Full-team Atlas access and integrated demonstration evidence still gate parent #12. The [release evidence](./milestone-3-evidence.md) records verified production reads and remaining live write checks.
 
 The database checker is implemented and tested against an isolated local MongoDB server. Atlas provisioning, each developer's access, and real application persistence are not established by those tests. Do not assume access is working until your own verification passes.
 
