@@ -1,8 +1,8 @@
 # Milestone 2 developer setup and verification
 
-> Coordination update, October 2, 2026: [independent assignments](./milestone-2-parallel-work.md) supersede earlier owner/dependency and completion sequencing. Each assignment can finish independently; full-team Atlas and integrated persistence evidence still gate parent #12. #14 shipped string IDs and real HTTP GET tests. Checker/seed commands remain planned until implemented.
+> Coordination update: [independent assignments](./milestone-2-parallel-work.md) define personal completion. #13 now supplies the database checker below. Full-team Atlas access and integrated persistence evidence still gate parent #12. Seed tooling remains separate work in #15.
 
-This is the onboarding procedure to accompany implementation. Atlas provisioning, the checker, and the seed tooling are planned work; they have not been executed or built by writing this guide. Do not assume access is working until your own verification passes.
+The database checker is implemented and tested against an isolated local MongoDB server. Atlas provisioning, each developer's access, and real application persistence are not established by those tests. Do not assume access is working until your own verification passes.
 
 You can complete your independent assignment using its specified local database or controlled-response tests before Atlas access is available. The procedure below supplies live evidence for final milestone acceptance; it is not a prerequisite on another developer's assignment.
 
@@ -36,23 +36,53 @@ You can complete your independent assignment using its specified local database 
 6. Restart the local app after changing environment configuration.
 7. Open the assigned Atlas project and verify you can inspect your data.
 
-The implementation task must also protect plain `.env` and other secret-bearing environment variants while keeping the example tracked. Standardize on `.env.local`; do not ask developers to commit populated configuration.
+Git ignores `.env` and `.env.*`, including backups and nested environment files, while retaining `.env.local.example`. This does not untrack any previously committed secret. Standardize on `.env.local`; never force-add populated configuration.
 
-## Verification tooling acceptance contract
+## Run your database verification
 
-Implementation will provide package commands for checking connectivity and seeding. Exact command names must be added here when those scripts exist; no checker or seed command is runnable solely because this guide exists.
+Run from the repository root after `npm install`:
 
-The checker must:
+```bash
+npm run db:check
+npm run db:check:write
+```
 
-- Load the same local configuration and intended database as the app.
-- Fail clearly when `MONGO_URI` is absent or a placeholder.
-- In default read-only mode, connect and perform an actual database read. Connecting alone is not a permission check.
-- Offer a clearly named explicit write-check mode. Insert a uniquely marked document into an isolated verification collection, read it back, and delete only that document.
-- Close its connection, use finite timeouts, and return a nonzero exit code on any failed step, including cleanup.
-- Report stage results and a safe database alias, never a URI, password, or raw exception containing credentials.
-- Protect unrelated documents and make the write effect clear before it runs.
+`db:check` is read-only. It performs a real `findOne` on `_coffee_shop_verification`; an empty result is a successful read. `db:check:write` explicitly inserts one UUID marker in that collection, reads it back, and deletes only that marker. It never writes offerings, clears collections, or drops databases. The empty verification collection may remain after cleanup.
+
+The script uses Next's environment loader with development precedence, matching `npm run dev`: an existing process variable wins, then `.env.development.local`, `.env.local`, `.env.development`, and `.env`. Prefer private `.env.local` and remove stale overrides. Do not run the development checker with `NODE_ENV=test` or `production`. The URI must explicitly name a database using letters, digits, underscores, or hyphens; `admin`, `local`, and `config` are refused. No URI, credentials, document contents, or raw database exceptions are printed.
+
+Expect `PASS configuration`, `connect`, `read`, and `close`. Write mode also requires `PASS write`, `read-back`, and `cleanup`. Any `FAIL` or nonzero exit means verification failed. Connection/socket/queue limits are five seconds; the whole command has a 30-second deadline. On cleanup failure or interruption, retain the printed marker and collection name and ask Brian to inspect and remove only that marker. Do not rerun repeatedly without resolving leftover verification records.
+
+Example sanitized write-check evidence:
+
+```text
+PASS configuration: database=coffee_shop_brian; mode=write
+PASS connect: Connected.
+PASS read: Read _coffee_shop_verification; no document contents printed.
+INFO disposable marker=<this-run-uuid>; collection=_coffee_shop_verification
+PASS write: Disposable write acknowledged.
+PASS read-back: Disposable marker read back.
+PASS cleanup: Only this run's marker removed (or absent after a failed write).
+PASS close: Connection closed.
+```
+
+The checker uses an independent short-lived MongoDB connection from Mongoose's bundled driver; it does not change the app's `connectDB` cache or serve a URL. See [Next's environment loader](https://nextjs.org/docs/app/guides/environment-variables#loading-environment-variables-with-nextenv) and [MongoDB connection timeouts](https://www.mongodb.com/docs/drivers/node/current/connect/connection-options/).
 
 Successful checker output proves local database access; it does not replace testing the offerings API and browser flow after those are implemented.
+
+## Verify the checker itself
+
+```bash
+npm run test:db
+npm test
+npm run lint
+npm run typecheck
+npm run build
+```
+
+`test:db` downloads MongoDB 7.0.24 on its first run and starts an authenticated, disposable loopback server in a temporary directory. It uses generated test configuration rather than your repository environment or Atlas. Tests cover missing/placeholder configuration, environment precedence, unavailable connection, denied reads/writes, write/read-back/cleanup, cleanup failure, and unrelated-record preservation. The server is stopped and its temporary data removed afterward. A binary download failure is a test failure, not a skipped verification; allow the first download to finish and rerun after fixing network/certificate issues. `npm test` also retains the existing public fixture GET regression checks.
+
+These local tests do not produce any person's live Atlas result. Record those separately below. Seed commands will be supplied by #15; they are not part of this checker.
 
 ## Seed and application verification
 

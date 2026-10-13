@@ -1,12 +1,9 @@
-import { InMemoryOfferingStore } from "@/lib/offering-store";
-import { getHandler, postHandler } from "./handlers";
+import { offeringStore } from "@/database/offeringStore";
+import { createOfferingHandlers } from "@/server/offering-handlers";
 
-const publicStore = new InMemoryOfferingStore();
+export const dynamic = "force-dynamic";
 
-export async function GET() {
-  return getHandler(publicStore);
-}
-
-export async function POST(request: Request) {
-  return postHandler(publicStore, request);
-}
+export const runtime = "nodejs";
+const handlers = createOfferingHandlers(offeringStore);
+export const GET = handlers.GET;
+export const POST = handlers.POST;
