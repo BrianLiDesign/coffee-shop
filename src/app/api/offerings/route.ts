@@ -1,9 +1,9 @@
-import { NextResponse } from "next/server";
-
-import { OfferingList } from "@/database/offering";
+import { offeringStore } from "@/database/offeringStore";
+import { createOfferingHandlers } from "@/server/offering-handlers";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
-  return NextResponse.json(OfferingList);
-}
+export const runtime = "nodejs";
+const handlers = createOfferingHandlers(offeringStore);
+export const GET = handlers.GET;
+export const POST = handlers.POST;

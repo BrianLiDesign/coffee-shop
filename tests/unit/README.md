@@ -10,7 +10,7 @@ Start from updated `main`. You can complete this customer-page assignment withou
 waiting for PR #31. Extend `customer-pages.test.tsx`, which renders the shared
 `OfferingsPage` component used by `/menu` and `/specials`.
 
-The file contains one foundation loading test, browser setup, and cleanup. Vitest
+The file contains five reference tests, browser setup, and cleanup. Vitest
 restores stubbed globals after each test. Optional sample data and a JSON response
 helper are in `helpers/offerings.ts`. None of your assigned Vitest cases has been
 implemented for you. Existing Node regressions cover related UI states; keep them
@@ -46,14 +46,12 @@ Controlled responses verify UI behavior; they do not prove live database persist
 
 ## Other developer assignments and release integration
 
-This foundation does not copy the release branch's completed unit suites into
-`main`. Its handler, replacement management component, and live acceptance runner
-are release-only modules until integrated. Their tests stay with PR #31, and their
-owners should follow their live issues for when to start. Compatible baseline
-coverage on current `main` is the loading example above; all existing Node
-regressions remain enabled.
+PR #31 integrates the handlers, replacement management component, live acceptance
+runner, and their reference tests into `main`. After it merges, developers can
+start from updated `main` and follow their assigned issues. Sofie's issue #36
+extends `scripts/live-acceptance.ts` through controlled fetch responses. Deployment
+and live verification remain separate work, tracked in issue #30.
 
-When reconciling PR #31, preserve this handoff and each developer's contributed
-cases. Keep agent-written reference tests distinct from personal contributions.
-Reconcile the Vitest version/configuration with the release runtime, and retain
+Preserve this handoff and each developer's contributed cases. Keep agent-written
+reference tests distinct from personal contributions. Retain
 both unit and regression commands, including storage and seed coverage from `main`.

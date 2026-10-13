@@ -3,6 +3,7 @@ import { createRequire } from "node:module";
 import { after, afterEach, before, describe, it, mock, test } from "node:test";
 import { JSDOM } from "jsdom";
 import { startHttpServer } from "./helpers/http-server.mjs";
+import { verifyLive } from "../scripts/live-acceptance.ts";
 
 let server;
 before(
@@ -37,22 +38,22 @@ test("GET preserves the starting menu and public offering fields", async () => {
   assert.deepEqual(
     offerings.map((offering) => offering.name),
     [
+      "Cafe au Lait",
       "Cappuccino",
-      "Pumpkin Spice Latte",
-      "Golden Hour Cold Brew",
-      "Mocha",
-      "Espresso",
-      "Latte",
-      "Cortado",
-      "English Breakfast Tea",
-      "Matcha",
       "Chai Latte",
       "Chamomile Tea",
-      "Cafe au Lait",
-      "London Fog",
-      "Iced Hibiscus Berry",
+      "Cortado",
+      "English Breakfast Tea",
+      "Espresso",
       "Fruit Smoothie",
+      "Golden Hour Cold Brew",
       "Hojicha Latte",
+      "Iced Hibiscus Berry",
+      "Latte",
+      "London Fog",
+      "Matcha",
+      "Mocha",
+      "Pumpkin Spice Latte",
     ],
   );
   for (const offering of offerings) {
@@ -61,7 +62,7 @@ test("GET preserves the starting menu and public offering fields", async () => {
     assert.equal(typeof offering.price, "number");
     assert.equal(typeof offering.specialOffer, "boolean");
   }
-  const { ID, ...cappuccino } = offerings[0];
+  const { ID, ...cappuccino } = offerings.find((offering) => offering.name === "Cappuccino");
   assert.deepEqual(cappuccino, {
     name: "Cappuccino",
     description: "A delicious cappuccino with steamed milk and foam",
@@ -76,8 +77,88 @@ test("GET flags exactly the three starting special offerings", async () => {
   const offerings = await response.json();
   assert.deepEqual(
     offerings.filter((offering) => offering.specialOffer).map((offering) => offering.name),
-    ["Pumpkin Spice Latte", "Golden Hour Cold Brew", "Hojicha Latte"],
+    ["Golden Hour Cold Brew", "Hojicha Latte", "Pumpkin Spice Latte"],
   );
+});
+
+test("real HTTP writes require sign-in and persist create, edit, and delete", async () => {
+  const url = `${server.baseUrl}/api/offerings`;
+  const input = {
+    name: "HTTP test latte",
+    description: "Disposable test offering",
+    price: 4.25,
+    category: "Coffee",
+    specialOffer: true,
+  };
+  const headers = { Authorization: server.authorization, "Content-Type": "application/json", Origin: server.baseUrl };
+  assert.equal(
+    (await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(input) }))
+      .status,
+    401,
+  );
+  assert.equal((await fetch(`${server.baseUrl}/manage-offerings`)).status, 401);
+  assert.equal((await fetch(`${server.baseUrl}/manage-offerings`, { headers })).status, 200);
+  assert.equal(
+    (
+      await fetch(url, {
+        method: "POST",
+        headers: { ...headers, Origin: "https://attacker.example" },
+        body: JSON.stringify(input),
+      })
+    ).status,
+    403,
+  );
+  assert.equal(
+    (await fetch(url, { method: "POST", headers, body: JSON.stringify({ ...input, price: "4.25" }) })).status,
+    400,
+  );
+  const created = await fetch(url, { method: "POST", headers, body: JSON.stringify(input) });
+  assert.equal(created.status, 201);
+  const offering = await created.json();
+  assert.match(offering.ID, /^[a-f\d]{24}$/);
+  await server.restart();
+  assert.deepEqual(
+    (await (await fetch(url)).json()).find((item) => item.ID === offering.ID),
+    offering,
+  );
+  assert.equal(
+    (
+      await fetch(`${url}/${offering.ID}`, {
+        method: "PUT",
+        headers,
+        body: JSON.stringify({ ...input, name: "Edited latte", specialOffer: false }),
+      })
+    ).status,
+    200,
+  );
+  assert.equal((await (await fetch(url)).json()).find((item) => item.ID === offering.ID).name, "Edited latte");
+  assert.equal((await fetch(`${url}/${offering.ID}`, { method: "DELETE", headers })).status, 204);
+  assert.equal(
+    (await (await fetch(url)).json()).some((item) => item.ID === offering.ID),
+    false,
+  );
+  assert.equal((await fetch(`${url}/${offering.ID}`, { method: "DELETE", headers })).status, 404);
+});
+
+test("live acceptance tooling verifies all operations and removes only its own marker", async () => {
+  const before = await (await fetch(`${server.baseUrl}/api/offerings`)).json();
+  const result = await verifyLive({
+    baseUrl: server.baseUrl,
+    username: "team",
+    password: "test-only-password",
+    allowWrites: true,
+    allOperations: true,
+  });
+  assert.equal(result.writes, true);
+  assert.equal(result.updated, true);
+  assert.deepEqual(await (await fetch(`${server.baseUrl}/api/offerings`)).json(), before);
+});
+
+test("an unavailable database returns sanitized 503 without a fixture fallback", async () => {
+  await server.stopDatabase();
+  const response = await fetch(`${server.baseUrl}/api/offerings`);
+  assert.equal(response.status, 503);
+  assert.match((await response.json()).error.message, /temporarily unavailable/);
 });
 
 // Test-only fixtures. Names, categories, and flags mirror the starting menu.
