@@ -2,13 +2,56 @@
 
 ## Verification boundary
 
-PR #31 integrates the release foundation so developers can extend it from `main`. Its merge does not complete the public production release, live database proof, or each developer's own contributions; those remain pending until recorded below. Issue #30 stays open to track the remaining release requirements. Agent-written reference tests do not count as evidence that another developer completed their assignment.
+### Public offering reads restored: October 13, 2026
+
+Production deployment [4B3zBNxrn](https://vercel.com/brianlidesign/coffee-shop/4B3zBNxrn3B7ZVvHdAZV3z9NjJZM)
+serves main commit `1aaec6dfe08149578b8fdc42e685029333e3cfa8` at
+[the public site](https://coffee-shop-sigma-rouge.vercel.app/).
+The missing Production `MONGO_URI` was entered privately by Brian and the project
+was redeployed. Brian created a separate application database user with `readWrite`
+limited to `coffee_shop` on the `students` cluster; the deployment uses that user,
+not an existing Atlas administrator credential. Brian explicitly approved the
+`0.0.0.0/0` Atlas network rule for this student project because Vercel Hobby uses
+dynamic outbound addresses. This allows connection attempts from any IPv4 address;
+TLS and database authentication remain required. Existing IP rules were retained.
+
+Local diagnosis also found an outdated cluster hostname, a missing database name,
+and certificate-chain verification failures. The private `.env.local` hostname and
+database were corrected. Running Node with `--use-system-ca` resolved the local
+certificate failure without disabling TLS verification. For a fresh PowerShell
+terminal on this machine, set `$env:NODE_OPTIONS='--use-system-ca'` before running
+the database checker or starting the app. This machine-specific launch setting is
+not a production requirement or a global system change.
+
+The selected Atlas collection was read and confirmed empty before the deliberate
+insert-only `npm run db:seed -- --apply` run, which inserted 16 offerings with three
+specials. Read-only `npm run test:live` passed against both localhost and the public
+HTTPS origin. The live API returned 200, 16 valid public offerings with unique IDs,
+and three specials. Local and production offering IDs match.
+
+Live browser verification at 1280×900 and 390×844 confirmed Menu shows 16 offerings,
+Specials shows only Golden Hour Cold Brew, Hojicha Latte, and Pumpkin Spice Latte,
+both survive refresh, no error alert appears, and neither page overflows horizontally.
+Evidence: [API checks](./evidence/offerings-restoration/api-check.json),
+[browser checks](./evidence/offerings-restoration/browser-checks.json),
+[Menu desktop](./evidence/offerings-restoration/menu-desktop.png),
+[Menu mobile](./evidence/offerings-restoration/menu-mobile.png),
+[Specials desktop](./evidence/offerings-restoration/specials-desktop.png), and
+[Specials mobile](./evidence/offerings-restoration/specials-mobile.png).
+
+This verifies public live reads and the deliberate Atlas seed, not live create,
+update, delete, or targeted cleanup through the application. Private management
+configuration, live write acceptance, and unrecorded personal contributions remain
+pending under issue #30. Historical foundation and preview observations below are
+retained for provenance.
+
+PR #31 integrates the release foundation so developers can extend it from `main`. Public production reads are now verified above. Live write acceptance and each developer's unrecorded contributions remain pending. Issue #30 stays open to track the remaining release requirements. Agent-written reference tests do not count as evidence that another developer completed their assignment.
 
 | Requirement                       | Evidence to record                                                                   | Status                                                        |
 | --------------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------- |
-| Public Vercel release             | Verified production URL and deployed Git commit                                      | Existing project confirmed; this branch pending deployment    |
-| Live create/read persistence      | Live acceptance output; browser refresh and Atlas inspection of the same offering ID | Pending deployment                                            |
-| Additional update/delete          | Live all-operations acceptance and targeted cleanup                                  | Pending deployment                                            |
+| Public Vercel release             | Verified production URL and deployed Git commit                                      | Verified main `1aaec6d`; see October 13 evidence above        |
+| Live create/read persistence      | Live acceptance output; browser refresh and Atlas inspection of the same offering ID | Live reads verified; live creation remains pending            |
+| Additional update/delete          | Live all-operations acceptance and targeted cleanup                                  | Pending live write acceptance                                 |
 | README                            | Description, setup, tech stack, tests, accurate verified live link                   | Implemented; existing live link recorded                      |
 | Loading, empty, responsive states | Controlled state checks and desktop/mobile screenshots                               | Automated coverage and local desktop/mobile evidence recorded |
 | Frontend API errors               | Failed fetch/save and successful save with failed reload                             | Automated coverage implemented                                |

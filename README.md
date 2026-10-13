@@ -18,7 +18,7 @@ espresso-brown ceramic coffee cup on a wooden table by a sunny café window, wit
 softly blurred seating, cream/espresso/terracotta colors, and no people, lettering,
 logos, or watermarks. It illustrates the fictional café.
 
-**Existing public site:** [Coffee Shop on Vercel](https://coffee-shop-sigma-rouge.vercel.app/). The Milestone 3 foundation is integrated through PR #31; production deployment, database configuration, and live operation verification must be verified separately. The [Milestone 3 preview](https://coffee-shop-git-feat-milestone-3-release-brianlidesign.vercel.app/) has Vercel sign-in protection. See the [deployment guide](docs/milestone-3-deployment.md) and [release evidence](docs/milestone-3-evidence.md). A successful local build is not live deployment evidence.
+**Public site:** [Pause & Pour on Vercel](https://coffee-shop-sigma-rouge.vercel.app/). Production commit `1aaec6d` was verified on October 13, 2026: Menu reads 16 stored offerings and Specials shows three, including after refresh. Live create/update/delete acceptance remains pending. The [Milestone 3 preview](https://coffee-shop-git-feat-milestone-3-release-brianlidesign.vercel.app/) has Vercel sign-in protection. See the [deployment guide](docs/milestone-3-deployment.md) and [release evidence](docs/milestone-3-evidence.md). A successful local build is not live deployment evidence.
 
 ## Features
 
