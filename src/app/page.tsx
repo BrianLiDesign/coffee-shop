@@ -32,7 +32,6 @@ export default function Home() {
             preload
             className={styles.heroImage}
           />
-          <figcaption>AI-generated café image.</figcaption>
         </figure>
       </section>
     </main>
